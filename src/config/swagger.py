@@ -45,7 +45,7 @@ def get_swagger_template():
         #"version": "0.0.1"
       #},"hello"
       #"host": "mysite.com",  # overrides localhost:500
-      #"basePath": get_swagger_base_url(),  # base bash for blueprint registration
+      "basePath": get_swagger_base_url(),  # base bash for blueprint registration
       "schemes": [
         "https",
         "http"
@@ -54,7 +54,6 @@ def get_swagger_template():
 
 
 INDEX_SWAGGER_BP = Blueprint('index_swagger_api', __name__)
-
 
 @INDEX_SWAGGER_BP.route('/')
 def index():

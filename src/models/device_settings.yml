@@ -1,0 +1,17 @@
+DeviceSettings object
+---
+type: object
+required:
+  - coffee_machine_id
+  - coffee_product_id
+  - price
+properties:
+  coffee_machine_id:
+    type: integer
+    example: 42
+  coffee_product_id:
+    type: integer
+    example: 42
+  price:
+    type: integer
+    example: 10

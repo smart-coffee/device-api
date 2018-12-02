@@ -5,13 +5,14 @@ from config import FLASK_APP
 from config.environment_tools import get_cert, get_key
 from config.flask_config import FlaskExceptionConfig, post_configuration, register_blueprints
 
-from resources import DEVICE_SETTINGS_BP
+from resources import DEVICE_BP
 
 
 def start_app(app: Flask):
     _EXCEPTION_CONF = FlaskExceptionConfig(app)
     _blueprints = [
-        DEVICE_SETTINGS_BP
+        INDEX_SWAGGER_BP,
+        DEVICE_BP
     ]
     _configs = [
         _EXCEPTION_CONF
