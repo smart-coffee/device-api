@@ -12,3 +12,6 @@
 database.cnf/
 logs/
 venv/
+docker/
+!docker/docker-entrypoint.sh
+scripts/

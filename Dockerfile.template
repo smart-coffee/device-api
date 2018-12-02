@@ -25,5 +25,8 @@ COPY . ./
 # switch on systemd init system in container
 ENV INITSYSTEM on
 
+COPY docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT [ "/usr/local/bin/docker-entrypoint.sh" ]
+
 # main.py will run when container starts up on the device
-CMD ["python","-u","src/main.py"]
+#CMD ["python","-u","src/main.py"]
