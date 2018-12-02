@@ -1,0 +1,31 @@
+#%RAML 1.0
+title: IoT Coffee Machine API
+version: v1.0
+baseUri: http://localhost:5000
+protocols: [ HTTP, HTTPS ]
+mediaType:  application/json
+
+securitySchemes:
+  jwt: !include securitySchemes/custom-jwt.raml
+
+types:
+  device-settings: !include types/device-settings.raml
+
+/api:
+  /device/settings:
+    securedBy: [ jwt ]
+    get:
+      description: Liefert die aktuellen Einstellungen der Kaffeemaschine.
+      responses: 
+        200:
+          description: Ok.
+          body:
+            type: device-settings
+    put:
+      description: Ändert die aktuellen Einstellungen der Kaffeemaschine
+      body:
+        type: device-settings
+      responses: 
+        200:
+          description: Ok. Einstellungen der Kaffeemaschine geändert.
+

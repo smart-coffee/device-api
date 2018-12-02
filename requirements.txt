@@ -1,14 +1,15 @@
 flask
 flask-restful
 flasgger
-flask-sqlalchemy
 pyjwt
 python-simplexml
-pymysql
-factory_boy
-alembic
 python-dotenv
-uwsgi
 flask-cors
 email_validator
-pytest-cov
+
+# flask-sqlalchemy
+# pymysql
+# factory_boy
+# alembic
+# uwsgi
+# pytest-cov

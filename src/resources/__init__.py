@@ -1,0 +1,1 @@
+from resources.device_settings import DEVICE_SETTINGS_BP

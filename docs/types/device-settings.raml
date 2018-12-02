@@ -1,0 +1,17 @@
+type: object
+properties:
+  coffee_machine_id:
+    required: true
+    type: integer
+    description: ID der Kaffeemaschine. (Muss auf dem Server existieren)
+    example: 42
+  coffee_product_id:
+    required: true
+    type: integer
+    description: ID des Kaffeeproduktes in der Kaffeemaschine. (Muss auf dem Server existieren)
+    example: 42
+  price:
+    required: true
+    type: integer
+    description: Preis pro Kaffee in Cents.
+    example: 10
