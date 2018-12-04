@@ -54,9 +54,9 @@ class CreateDeviceJob:
     file: /models/device-job-create.yml
     """
     def __init__(self, *args, **kwargs):
-        self.coffee_strength_in_percent = 1
-        self.water_in_percent = 1
-        self.doses = 1
+        self.coffee_strength_in_percent = -1 if not ('coffee_strength_in_percent' in kwargs) else kwargs['coffee_strength_in_percent']
+        self.water_in_percent = -1 if not ('water_in_percent' in kwargs) else kwargs['water_in_percent']
+        self.doses = -1 if not ('doses' in kwargs) else kwargs['doses']
     
     @staticmethod
     def get_fields():
@@ -73,15 +73,15 @@ class DeviceJob:
     file: /models/device-job.yml
     """
     def __init__(self, *args, **kwargs):
-        self.id = None
-        self.create_date = None
-        self.square_date = None
-        self.coffee_machine_id = None
-        self.coffee_strength_in_percent = None
-        self.water_in_percent = None
-        self.price = None
-        self.doses = None
-        self.coffee_product_id = None
+        self.id = None if not ('id' in kwargs) else kwargs['id']
+        self.create_date = None if not ('create_date' in kwargs) else kwargs['create_date']
+        self.square_date = None if not ('square_date' in kwargs) else kwargs['square_date']
+        self.coffee_machine_id = None if not ('coffee_machine_id' in kwargs) else kwargs['coffee_machine_id']
+        self.coffee_strength_in_percent = None if not ('coffee_strength_in_percent' in kwargs) else kwargs['coffee_strength_in_percent']
+        self.water_in_percent = None if not ('water_in_percent' in kwargs) else kwargs['water_in_percent']
+        self.price = None if not ('price' in kwargs) else kwargs['price']
+        self.doses = None if not ('doses' in kwargs) else kwargs['doses']
+        self.coffee_product_id = None if not ('coffee_product_id' in kwargs) else kwargs['coffee_product_id']
     
     @staticmethod
     def get_fields():
@@ -96,8 +96,3 @@ class DeviceJob:
             'doses': fields.Integer,
             'coffee_product_id': fields.Integer
         }
-
-
-class CoffeeMachine:
-    def __init__(self, device_settings: DeviceSettings, *args, **kwargs):
-        self.settings = device_settings

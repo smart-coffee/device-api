@@ -7,7 +7,7 @@ from flask import Blueprint, request
 from flask_restful import Api, marshal_with, Resource
 
 from utils.http import token_required, get_post_response
-from models import DeviceSettings, DeviceStatus, DeviceJob
+from models import DeviceSettings, DeviceStatus, DeviceJob, CreateDeviceJob
 from controllers.device_settings import DeviceSettingsController
 from controllers.device_status import DeviceStatusController
 from controllers.device_job import DeviceJobController
@@ -54,8 +54,10 @@ class DeviceJobResource(Resource):
     @token_required()
     @swag_from('/resources/device/description/device_job_post.yml')
     def post(self, token:str):
-        job = self.controller.create_job(token)
-        response = get_post_response(body=job, content_type='application/json', api='/{rsc}/job'.format(rsc=API_PREFIX), obj_id=job.id)
+        data = request.get_json()
+        new_job = CreateDeviceJob(**data)
+        created_job = self.controller.create_job(token, new_job)
+        response = get_post_response(body=created_job, content_type='application/json', api='/{rsc}/job'.format(rsc=API_PREFIX), obj_id=created_job.id)
         return response
 
 
