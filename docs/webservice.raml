@@ -9,6 +9,7 @@ securitySchemes:
 
 types:
   device-settings: !include types/device-settings.raml
+  device-status: !include types/device-status.raml
   job: !include types/job.raml
   job-create: !include types/job-create.raml
 
@@ -40,4 +41,13 @@ types:
           description: Created.
           body:
             type: job
+  /status:
+    securedBy: [ jwt ]
+    get:
+      description: Liefert den aktuellen Status der Kaffeemaschine.
+      responses: 
+        200:
+          description: Ok.
+          body:
+            type: device-status
 

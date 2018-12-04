@@ -1,0 +1,43 @@
+type: object
+properties:
+  device_ready:
+    required: true
+    type: boolean
+    description: Zeigt an, ob die Kaffeemaschine bereit ist einen Job anzunehmen.
+    example: true
+  water_tank_ready:
+    required: true
+    type: boolean
+    description: Zeigt an, ob der Wassertank Wasser enthält oder vorhanden ist.
+    example: true
+  water_tank_fill_level_in_percent:
+    required: false
+    type: integer
+    minimum: 1
+    maximum: 100
+    description: Zeigt den aktuellen Füllstand des Wassertanks in Prozent an.
+    example: 66
+  coffee_bean_container_ready:
+    required: true
+    type: boolean
+    description: Zeigt an, ob Kaffeebohnen vorhanden sind.
+    example: true
+  coffee_bean_container_fill_level_in_percent:
+    required: false
+    type: integer
+    minimum: 1
+    maximum: 100
+    description: Zeigt den aktuellen Füllstand des Kaffeebohnenbehälters in Prozent an.
+    example: 66
+  coffee_grounds_container_ready:
+    required: true
+    type: boolean
+    description: Zeigt an, ob der Kaffeesatzbehälter genügend Platz für einen weiteren Job bietet oder vorhanden ist.
+    example: true
+  coffee_grounds_container_fill_level_in_percent:
+    required: false
+    type: integer
+    minimum: 1
+    maximum: 100
+    description: Zeigt den aktuellen Füllstand des Kaffeesatzbehälters in Prozent an.
+    example: 66
