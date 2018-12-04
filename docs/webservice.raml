@@ -10,8 +10,8 @@ securitySchemes:
 types:
   device-settings: !include types/device-settings.raml
   device-status: !include types/device-status.raml
-  job: !include types/job.raml
-  job-create: !include types/job-create.raml
+  device-job: !include types/device-job.raml
+  device-job-create: !include types/device-job-create.raml
 
 /api/device:
   /settings:
@@ -35,12 +35,12 @@ types:
     post:
       description: Führt einen Auftrag auf der Kaffeemaschine aus.
       body:
-        type: job-create
+        type: device-job-create
       responses:
         201:
           description: Created.
           body:
-            type: job
+            type: device-job
   /status:
     securedBy: [ jwt ]
     get:

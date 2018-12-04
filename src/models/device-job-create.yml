@@ -1,0 +1,17 @@
+CreateDeviceJob object
+---
+type: object
+required:
+  - coffee_strength_in_percent
+  - water_in_percent
+  - doses
+properties:
+  coffee_strength_in_percent:
+    type: integer
+    example: 42
+  water_in_percent:
+    type: integer
+    example: 42
+  doses:
+    type: integer
+    example: 1

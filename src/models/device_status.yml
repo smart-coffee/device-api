@@ -1,0 +1,30 @@
+DeviceStatus object
+---
+type: object
+required:
+  - device_ready
+  - water_tank_ready
+  - coffee_bean_container_ready
+  - coffee_grounds_container_ready
+properties:
+  device_ready:
+    type: boolean
+    example: true
+  water_tank_ready:
+    type: boolean
+    example: false
+  water_tank_fill_level_in_percent:
+    type: integer
+    example: 10
+  coffee_bean_container_ready:
+    type: boolean
+    example: true
+  coffee_bean_container_fill_level_in_percent:
+    type: integer
+    example: 10
+  coffee_grounds_container_ready:
+    type: boolean
+    example: true
+  coffee_grounds_container_fill_level_in_percent:
+    type: integer
+    example: 10

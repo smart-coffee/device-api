@@ -7,4 +7,3 @@ class DeviceSettingsController:
     
     def edit_settings(self, token:str, new_settings:DeviceSettings) -> DeviceSettings:
         return new_settings
-
