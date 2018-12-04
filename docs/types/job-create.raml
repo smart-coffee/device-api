@@ -1,0 +1,23 @@
+type: object
+properties:
+  coffee_strength_in_percent:
+    required: true
+    type: integer
+    minimum: 0
+    maximum: 100
+    description: Kaffeestärke in Prozent
+    example: 66
+  water_in_percent:
+    required: true
+    type: integer
+    minimum: 0
+    maximum: 100
+    description: Wasseranteil in Prozent
+    example: 66
+  doses:
+    required: true
+    type: integer
+    minimum: 1
+    maximum: 2
+    description: Die Anzahl der hergestellten Kaffee in diesem Auftrag
+    example: 1
