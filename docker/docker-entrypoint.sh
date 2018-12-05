@@ -20,6 +20,9 @@ APP_URL_PREFIX=/api
 
 # Should be empty in $local_mode environment
 SWAGGER_BASE_URL=
+
+WEBAPI_DOMAIN=https://tobias-blaufuss.de
+WEBAPI_PORT=65291
 EOF
 fi
 

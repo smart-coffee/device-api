@@ -3,9 +3,10 @@ import os
 import errno
 
 from pathlib import Path
-from models import DeviceSettings, DeviceStatus
 
+from models import DeviceSettings, DeviceStatus
 from config.logger import logging, get_logger_name
+from config.environment_tools import get_webapi_domain, get_webapi_port
 
 
 logger = logging.getLogger(get_logger_name(__name__))
@@ -55,6 +56,19 @@ class CoffeeMachineHardwareAPI:
         logger.warning('Should read status of coffee machine here and set it to self._status')
 
 
+class WebAPI:
+    def __init__(self, domain: str, port: int):
+        self._domain = domain
+        self._port = port
+    
+    @property
+    def url(self):
+        return '{domain}:{port}'.format(domain=self._domain, port=self._port)
+
 CM_API = CoffeeMachineHardwareAPI()
 CM_API.init_settings()
 CM_API.read_settings()
+
+domain=get_webapi_domain()
+port=get_webapi_port()
+WEB_API = WebAPI(domain=domain, port=port)

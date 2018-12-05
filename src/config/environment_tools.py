@@ -40,7 +40,9 @@ _available_environment_variables = {
     'APP_HOST': None,
     'SECRET_KEY': None,
     'APP_URL_PREFIX': None,
-    'SWAGGER_BASE_URL': None
+    'SWAGGER_BASE_URL': None,
+    'WEBAPI_DOMAIN': None,
+    'WEBAPI_PORT': None
 }
 
 
@@ -91,6 +93,14 @@ def get_app_url_prefix():
 
 def get_swagger_base_url():
     return _available_environment_variables['SWAGGER_BASE_URL']
+
+
+def get_webapi_domain():
+    return _available_environment_variables['WEBAPI_DOMAIN']
+
+
+def get_webapi_port():
+    return _available_environment_variables['WEBAPI_PORT']
 
 
 def _replace_environment_mode(params: dict):

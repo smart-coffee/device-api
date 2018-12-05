@@ -16,6 +16,9 @@ APP_URL_PREFIX=/api
 
 # This path should conform with the path that is provided by uwsgi.ini"
 SWAGGER_BASE_URL=
+
+WEBAPI_DOMAIN=https://tobias-blaufuss.de
+WEBAPI_PORT=65291
 EOF
 }
 
@@ -36,6 +39,9 @@ APP_URL_PREFIX=/api
 
 # Should be empty in $local_mode environment
 SWAGGER_BASE_URL=
+
+WEBAPI_DOMAIN=https://tobias-blaufuss.de
+WEBAPI_PORT=65291
 EOF
 }
 
