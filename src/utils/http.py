@@ -10,6 +10,7 @@ from werkzeug.wrappers import Response, HTTP_STATUS_CODES
 
 from config import get_secret_key, FLASK_APP
 from config.flask_config import AuthenticationFailed, ForbiddenResourceException, ResourceException
+from core import WEB_API
 
 
 CODE = 201
@@ -25,7 +26,10 @@ def token_required(roles:List[str]=None):
 
             if not token:
                 raise AuthenticationFailed('Token is missing')
-                
+            
+            # Verifies user token
+            WEB_API.is_user(token)
+
             return func(token=token, *args, **kwargs)
         return wrapper
     return decorator

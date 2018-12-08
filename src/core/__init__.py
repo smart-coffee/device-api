@@ -1,12 +1,14 @@
 import json
 import os
 import errno
+import requests
 
 from pathlib import Path
 
 from models import DeviceSettings, DeviceStatus
 from config.logger import logging, get_logger_name
-from config.environment_tools import get_webapi_domain, get_webapi_port
+from config.environment_tools import get_webapi_domain, get_webapi_port, get_ssl_ca_bundle
+from config.flask_config import ResourceException
 
 
 logger = logging.getLogger(get_logger_name(__name__))
@@ -56,14 +58,70 @@ class CoffeeMachineHardwareAPI:
         logger.warning('Should read status of coffee machine here and set it to self._status')
 
 
+ROUTES = {
+    'COFFEE_MACHINE': '{base_url}/api/coffee/machines/{id}',
+    'COFFEE_PRODUCT': '{base_url}/api/coffee/products/{id}',
+    'CREATE_JOB': '{base_url}/api/users/current/jobs',
+    'IS_USER': '{base_url}/api/auth/refresh',
+    'IS_ADMIN': '{base_url}/api/users'
+}
+
+
 class WebAPI:
-    def __init__(self, domain: str, port: int):
+    def __init__(self, domain: str, port: int, ssl_ca_bundle: str):
         self._domain = domain
         self._port = port
+        self._ssl_ca_bundle = ssl_ca_bundle
     
     @property
     def url(self):
         return '{domain}:{port}'.format(domain=self._domain, port=self._port)
+
+    def is_user(self, token: str):
+        is_user_url = ROUTES['IS_USER'].format(base_url=self.url)
+        is_user_response = self.post(is_user_url, token)
+        return is_user_response
+
+    def is_admin(self, token: str):
+        is_admin_url = ROUTES['IS_ADMIN'].format(base_url=self.url)
+        is_admin_response = self.get(is_admin_url, token)
+        return is_admin_response
+
+    
+    def get_coffee_machine(self, token: str, coffee_machine_id: int):
+        coffee_machine_url = ROUTES['COFFEE_MACHINE'].format(base_url=self.url, id=coffee_machine_id)
+        coffee_machine_response = self.get(coffee_machine_url, token)
+        return coffee_machine_response
+
+    def get_coffee_product(self, token: str, coffee_product_id: int):
+        coffee_product_url = ROUTES['COFFEE_PRODUCT'].format(base_url=self.url, id=coffee_product_id)
+        coffee_product_response = self.get(coffee_product_url, token)
+        return coffee_product_response
+
+    def create_job(self, token: str, job_json):
+        create_job_url = ROUTES['CREATE_JOB'].format(base_url=self.url)
+        return self.post(create_job_url, token, job_json)
+    
+    def get(self, url: str, token: str):
+        headers = {"x-access-token":token}
+        verify = self._ssl_ca_bundle
+        response = requests.get(url, headers=headers, verify=verify)
+        self._check_response(response)
+        return response
+    
+    def post(self, url: str, token: str, json=None):
+        headers = {"x-access-token":token}
+        verify = self._ssl_ca_bundle
+        response = requests.post(url, headers=headers, verify=verify, json=json)
+        self._check_response(response)
+        return response
+
+    def _check_response(self, response):
+        status_code = response.status_code
+        if 200 <= status_code <= 302:
+            return
+        json_obj = response.json()
+        raise ResourceException(status_code=status_code, message=json_obj['message'])
 
 CM_API = CoffeeMachineHardwareAPI()
 CM_API.init_settings()
@@ -71,4 +129,5 @@ CM_API.read_settings()
 
 domain=get_webapi_domain()
 port=get_webapi_port()
-WEB_API = WebAPI(domain=domain, port=port)
+ssl_ca_bundle=get_ssl_ca_bundle()
+WEB_API = WebAPI(domain=domain, port=port, ssl_ca_bundle=ssl_ca_bundle)

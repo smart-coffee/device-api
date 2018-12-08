@@ -19,6 +19,7 @@ SWAGGER_BASE_URL=
 
 WEBAPI_DOMAIN=https://tobias-blaufuss.de
 WEBAPI_PORT=65291
+SSL_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt'
 EOF
 }
 
@@ -42,6 +43,7 @@ SWAGGER_BASE_URL=
 
 WEBAPI_DOMAIN=https://tobias-blaufuss.de
 WEBAPI_PORT=65291
+SSL_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt'
 EOF
 }
 

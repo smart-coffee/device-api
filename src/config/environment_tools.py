@@ -42,7 +42,8 @@ _available_environment_variables = {
     'APP_URL_PREFIX': None,
     'SWAGGER_BASE_URL': None,
     'WEBAPI_DOMAIN': None,
-    'WEBAPI_PORT': None
+    'WEBAPI_PORT': None,
+    'SSL_CA_BUNDLE': None
 }
 
 
@@ -101,6 +102,10 @@ def get_webapi_domain():
 
 def get_webapi_port():
     return _available_environment_variables['WEBAPI_PORT']
+
+
+def get_ssl_ca_bundle():
+    return _available_environment_variables['SSL_CA_BUNDLE']
 
 
 def _replace_environment_mode(params: dict):
