@@ -6,6 +6,7 @@ python-simplexml
 python-dotenv
 flask-cors
 email_validator
+requests
 
 # flask-sqlalchemy
 # pymysql
