@@ -48,13 +48,10 @@ _available_environment_variables = {
 
 def init_environment(env_path: str = None, debug: bool = True):
     if env_path:
-        print(1)
         load_dotenv(dotenv_path=env_path)
     else:
-        print(2)
         load_dotenv(find_dotenv())
     for key in _available_environment_variables.keys():
-        print(os.environ)
         _env_var = os.environ[key]
         if debug and len(_env_var) == 0:
             logger.warning('Environment variable "{}" is empty'.format(key))
