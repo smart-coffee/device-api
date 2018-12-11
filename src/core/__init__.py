@@ -66,7 +66,9 @@ class CoffeeMachineHardwareAPI:
         elif doses == 2:
             pin = GPIO_PINS['TWO_DOSES']
         else:
-            logger.error('Doses {doses} not possible.'.format(doses=doses))
+            msg = 'Doses {doses} not possible.'.format(doses=doses)
+            logger.error(msg)
+            raise ResourceException(status_code=405, message=msg)
         self.press_button(pin = pin)
     
     def toggle_power(self):
