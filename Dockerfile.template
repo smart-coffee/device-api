@@ -8,6 +8,9 @@ FROM resin/%%RESIN_MACHINE_NAME%%-python:3
 #    alsa-utils libasound2-dev && \
 #    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+#RUN apt-get update && apt-get install -yq \
+#    python3-gpiozero python-gpiozero python-rpi.gpio python-spidev python3-rpi.gpio python3-spidev
+
 RUN apt-get update \
     && curl https://letsencrypt.org/certs/isrgrootx1.pem.txt -o /usr/local/share/ca-certificates/isrgrootx1.crt \
     && curl https://letsencrypt.org/certs/letsencryptauthorityx1.pem.txt -o /usr/local/share/ca-certificates/letsencryptauthorityx1.crt \

@@ -7,7 +7,7 @@ python-dotenv
 flask-cors
 email_validator
 requests
-
+RPi.Gpio
 # flask-sqlalchemy
 # pymysql
 # factory_boy
