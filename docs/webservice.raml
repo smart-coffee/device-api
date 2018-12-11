@@ -10,6 +10,7 @@ securitySchemes:
 types:
   device-settings: !include types/device-settings.raml
   device-status: !include types/device-status.raml
+  device-status-edit: !include types/device-status-edit.raml
   device-job: !include types/device-job.raml
   device-job-create: !include types/device-job-create.raml
 
@@ -45,6 +46,15 @@ types:
     securedBy: [ jwt ]
     get:
       description: Liefert den aktuellen Status der Kaffeemaschine.
+      responses: 
+        200:
+          description: Ok.
+          body:
+            type: device-status
+    put:
+      description: Setzt die veränderbaren Status der Kaffeemaschine.
+      body:
+        type: device-status-edit
       responses: 
         200:
           description: Ok.

@@ -41,3 +41,13 @@ properties:
     maximum: 100
     description: Zeigt den aktuellen Füllstand des Kaffeesatzbehälters in Prozent an.
     example: 66
+  coffee_machine_runtime_state:
+    required: true
+    type: integer
+    description: |
+      Zeigt den aktuellen Runtime Status der Kaffeemaschine.
+      1 = Kaffeemaschine an.
+      2 = Kaffeemaschine aus 
+      3 = Kaffeemaschine befindet sich im Startup-Prozess.
+      4 = Kaffeemaschine befindet sich im Shutdown-Prozess
+    example: 2
