@@ -18,7 +18,7 @@ logger = logging.getLogger(get_logger_name(__name__))
 
 
 class CoffeeMachineHardwareAPI:
-    _settings_file = Path('coffee_machine_settings.json')
+    _settings_file = Path('/data/coffee_machine_settings.json')
 
     def __init__(self):
         self.file_path = CoffeeMachineHardwareAPI._settings_file
