@@ -7,7 +7,7 @@ class DeviceStatusController:
         return CM_API.status
     
     def set_status(self, token:str, status:EditDeviceStatus) -> DeviceStatus:
-        state = status.device_runtime_state()
+        state = status.device_runtime_state
         if state == DeviceRuntimeState.ON:
             self.turn_on(token)
         if state == DeviceRuntimeState.OFF:
