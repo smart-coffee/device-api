@@ -13,6 +13,8 @@ class DeviceJobController:
             **(create_job.__dict__),
             **(settings.__dict__)
         }
+        doses = create_job.doses
+        CM_API.make_coffee(doses=doses)
         response = WEB_API.create_job(token, create_job_body)
         response_json = response.json()
 

@@ -2,6 +2,9 @@ import json
 import os
 import errno
 import requests
+import time
+
+import RPi.GPIO as GPIO
 
 from pathlib import Path
 
@@ -56,6 +59,15 @@ class CoffeeMachineHardwareAPI:
     def read_status(self):
         self._status = DeviceStatus()
         logger.warning('Should read status of coffee machine here and set it to self._status')
+
+    def make_coffee(self, doses: int):
+        GPIO.setmode(GPIO.BCM)
+        pin = 26
+        GPIO.setup(pin, GPIO.OUT)
+        GPIO.output(pin, True)
+        time.sleep(1)
+        GPIO.cleanup()
+
 
 
 ROUTES = {
