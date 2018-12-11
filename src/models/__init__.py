@@ -86,7 +86,7 @@ class EditDeviceStatus:
     """
     file: /models/device-status-edit.yml
     """
-    def __init__(self, *args, **args):
+    def __init__(self, *args, **kwargs):
         self.coffee_machine_runtime_state = DeviceRuntimeState.OFF.state_id if not ('coffee_machine_runtime_state' in kwargs) else kwargs['coffee_machine_runtime_state']
     
     @property
