@@ -61,11 +61,20 @@ class CoffeeMachineHardwareAPI:
         logger.warning('Should read status of coffee machine here and set it to self._status')
 
     def make_coffee(self, doses: int):
-        GPIO.setmode(GPIO.BCM)
         if doses == 1:
             pin = GPIO_PINS['ONE_DOSE']
-        if doses == 2:
+        elif doses == 2:
             pin = GPIO_PINS['TWO_DOSES']
+        else:
+            logger.error('Doses {doses} not possible.'.format(doses=doses))
+        self.press_button(pin = pin)
+    
+    def toggle_power(self):
+        pin = GPIO_PINS['POWER']
+        self.press_button(pin = pin)
+    
+    def press_button(self, pin: int):
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(pin, True)
         time.sleep(DURATION_IN_SEC)
@@ -77,7 +86,7 @@ GPIO_PINS = {
     'TWO_DOSES': 16,
     'STEAM': None,
     'ECO': None,
-    'ON_OFF': None,
+    'POWER': 12,
     'MAINTENANCE': None
 }
 

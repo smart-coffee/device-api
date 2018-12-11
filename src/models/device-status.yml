@@ -28,3 +28,6 @@ properties:
   coffee_grounds_container_fill_level_in_percent:
     type: integer
     example: 10
+  coffee_machine_runtime_state:
+    type: integer
+    example: 1

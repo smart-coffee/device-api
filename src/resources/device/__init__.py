@@ -7,7 +7,7 @@ from flask import Blueprint, request
 from flask_restful import Api, marshal_with, Resource
 
 from utils.http import token_required, get_post_response
-from models import DeviceSettings, DeviceStatus, DeviceJob, CreateDeviceJob
+from models import DeviceSettings, DeviceStatus, DeviceJob, CreateDeviceJob, EditDeviceStatus
 from controllers.device_settings import DeviceSettingsController
 from controllers.device_status import DeviceStatusController
 from controllers.device_job import DeviceJobController
@@ -45,6 +45,14 @@ class DeviceStatusResource(Resource):
     @marshal_with(DeviceStatus.get_fields())
     def get(self, token:str) -> DeviceStatus:
         return self.controller.get_status(token)
+    
+    @token_required()
+    @swag_from('/resources/device/description/device_status_put.yml')
+    @marshal_with(DeviceStatus.get_fields())
+    def put(self, token:str) -> DeviceStatus:
+        data = request.get_json()
+        new_status = EditDeviceStatus(**data)
+        return self.controller.set_status(token, new_status)
 
 
 class DeviceJobResource(Resource):

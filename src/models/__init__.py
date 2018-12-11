@@ -1,3 +1,4 @@
+from enum import Enum
 from flask_restful import fields
 
 from config import SWAG
@@ -6,7 +7,7 @@ from config import SWAG
 @SWAG.definition('DeviceSettings')
 class DeviceSettings:
     """
-    file: /models/device_settings.yml
+    file: /models/device-settings.yml
     """
     def __init__(self, *args, **kwargs):
         self.coffee_machine_id = -1 if not ('coffee_machine_id' in kwargs) else kwargs['coffee_machine_id']
@@ -21,10 +22,25 @@ class DeviceSettings:
             'price': fields.Integer
         }
 
+
+class DeviceRuntimeState(Enum):
+    ON = (1)
+    OFF = (2)
+    STARTUP = (3)
+    SHUTDOWN = (4)
+
+    def __init__(self, state_id):
+        self._state_id = state_id
+
+    @property
+    def state_id(self):
+        return self._state_id
+
+
 @SWAG.definition('DeviceStatus')
 class DeviceStatus:
     """
-    file: /models/device_status.yml
+    file: /models/device-status.yml
     """
     def __init__(self, *args, **kwargs):
         self.device_ready = True
@@ -34,7 +50,24 @@ class DeviceStatus:
         self.coffee_bean_container_fill_level_in_percent = 1
         self.coffee_grounds_container_ready = True
         self.coffee_grounds_container_fill_level_in_percent = 1
+        self.coffee_machine_runtime_state = DeviceRuntimeState.OFF.state_id
     
+    @property
+    def device_runtime_state(self) -> DeviceRuntimeState:
+        state_id = self.coffee_machine_runtime_state
+        for state in DeviceRuntimeState:
+            if state.state_id == state_id:
+                return state
+        raise ValueError('Unknown state.')
+    
+    def is_on(self):
+        state = self.device_runtime_state
+        return state == DeviceRuntimeState.ON
+    
+    def is_off(self):
+        state = self.device_runtime_state
+        return state == DeviceRuntimeState.OFF
+        
     @staticmethod
     def get_fields():
         return {
@@ -44,7 +77,30 @@ class DeviceStatus:
             'coffee_bean_container_ready': fields.Boolean,
             'coffee_bean_container_fill_level_in_percent': fields.Integer,
             'coffee_grounds_container_ready': fields.Integer,
-            'coffee_grounds_container_fill_level_in_percent': fields.Integer
+            'coffee_grounds_container_fill_level_in_percent': fields.Integer,
+            'coffee_machine_runtime_state': fields.Integer
+        }
+
+@SWAG.definition('EditDeviceStatus')
+class EditDeviceStatus:
+    """
+    file: /models/device-status-edit.yml
+    """
+    def __init__(self, *args, **args):
+        self.coffee_machine_runtime_state = DeviceRuntimeState.OFF.state_id if not ('coffee_machine_runtime_state' in kwargs) else kwargs['coffee_machine_runtime_state']
+    
+    @property
+    def device_runtime_state(self) -> DeviceRuntimeState:
+        state_id = self.coffee_machine_runtime_state
+        for state in DeviceRuntimeState:
+            if state.state_id == state_id:
+                return state
+        raise ValueError('Unknown state.')
+    
+    @staticmethod
+    def get_fields():
+        return {
+            'coffee_machine_runtime_state': fields.Integer
         }
 
 

@@ -1,0 +1,9 @@
+EditDeviceStatus object
+---
+type: object
+required:
+  - coffee_machine_runtime_state
+properties:
+  coffee_machine_runtime_state:
+    type: integer
+    example: 1
