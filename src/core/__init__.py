@@ -62,13 +62,26 @@ class CoffeeMachineHardwareAPI:
 
     def make_coffee(self, doses: int):
         GPIO.setmode(GPIO.BCM)
-        pin = 26
+        if doses == 1:
+            pin = GPIO_PINS['ONE_DOSE']
+        if doses == 2:
+            pin = GPIO_PINS['TWO_DOSES']
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(pin, True)
-        time.sleep(1)
+        time.sleep(DURATION_IN_SEC)
         GPIO.cleanup()
 
 
+GPIO_PINS = {
+    'ONE_DOSE': 26,
+    'TWO_DOSES': 16,
+    'STEAM': None,
+    'ECO': None,
+    'ON_OFF': None,
+    'MAINTENANCE': None
+}
+
+DURATION_IN_SEC = 2
 
 ROUTES = {
     'COFFEE_MACHINE': '{base_url}/api/coffee/machines/{id}',
