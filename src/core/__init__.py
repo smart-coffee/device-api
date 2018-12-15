@@ -66,7 +66,7 @@ class CoffeeMachineHardwareAPI:
         elif doses == 2:
             pin = GPIO_PINS['TWO_DOSES']
         else:
-            msg = 'Doses {doses} not possible.'.format(doses=doses)
+            msg = 'Kaffeeauftrag mit {doses} Dosen nicht möglich.'.format(doses=doses)
             logger.error(msg)
             raise ResourceException(status_code=405, message=msg)
         self.press_button(pin = pin)

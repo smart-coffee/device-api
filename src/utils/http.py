@@ -1,15 +1,12 @@
-import jwt
 import json
 
 from typing import List
 from functools import wraps
-from flask import Blueprint, request, make_response
-from flask_restful import Api
+from flask import request
 from simplexml import dumps
 from werkzeug.wrappers import Response, HTTP_STATUS_CODES
 
-from config import get_secret_key, FLASK_APP
-from config.flask_config import AuthenticationFailed, ForbiddenResourceException, ResourceException
+from config.flask_config import AuthenticationFailed
 from core import WEB_API
 
 
@@ -25,7 +22,7 @@ def token_required(roles:List[str]=None):
                 token = request.headers['x-access-token']
 
             if not token:
-                raise AuthenticationFailed('Token is missing')
+                raise AuthenticationFailed('Token fehlt.')
             
             # Verifies user token
             WEB_API.is_user(token)

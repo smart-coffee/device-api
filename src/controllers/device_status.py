@@ -17,13 +17,13 @@ class DeviceStatusController:
     def turn_on(self, token: str) -> DeviceStatus:
         status = CM_API.status
         if status.is_on():
-            raise ResourceException(status_code=405, message='Device is already on.')
+            raise ResourceException(status_code=405, message='Kaffeemaschine ist nicht bereit.')
         CM_API.toggle_power()
         return CM_API.status
     
     def turn_off(self, token: str) -> DeviceStatus:
         status = CM_API.status
         if status.is_off():
-            raise ResourceException(status_code=405, message='Device is already off.')
+            raise ResourceException(status_code=405, message='Kaffeemaschine ist nicht bereit.')
         CM_API.toggle_power()
         return CM_API.status
