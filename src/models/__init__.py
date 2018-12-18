@@ -45,11 +45,11 @@ class DeviceStatus:
     def __init__(self, *args, **kwargs):
         self.device_ready = True
         self.water_tank_ready = True
-        self.water_tank_fill_level_in_percent = 1
+        self.water_tank_fill_level_in_percent = 100
         self.coffee_bean_container_ready = True
-        self.coffee_bean_container_fill_level_in_percent = 1
+        self.coffee_bean_container_fill_level_in_percent = 100
         self.coffee_grounds_container_ready = True
-        self.coffee_grounds_container_fill_level_in_percent = 1
+        self.coffee_grounds_container_fill_level_in_percent = 0
         self.coffee_machine_runtime_state = DeviceRuntimeState.OFF.state_id
     
     @property
