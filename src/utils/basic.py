@@ -1,6 +1,6 @@
 def validate_percent_value(value: int, accuracy: int = 0) -> bool:
-    is_percent_value = is_percent_value(value=value, accuracy=accuracy)
-    if not is_percent_value:
+    _is_percent_value = is_percent_value(value=value, accuracy=accuracy)
+    if not _is_percent_value:
         raise ValueError('Not a valid percent value: {0} (Accuracy: {1})'.format(value, accuracy))
 
 
