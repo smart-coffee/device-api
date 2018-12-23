@@ -62,27 +62,14 @@ class CoffeeMachineHardwareAPI:
         logger.warning('Should read status of coffee machine here and set it to self._status')
 
     def set_water_in_percent(self, water_in_percent: int):
-        pass
+        address = I2C_ADDRESS_MAPPINGS['WATER']
+        bus_number = I2C_BUS_NUMBER
+        self.set_dac_value(bus_number=bus_number, address=address, percent_value=water_in_percent, sensor_name='Water')
     
     def set_coffee_strength_in_percent(self, coffee_strength_in_percent: int):
-        if coffee_strength_in_percent > 100:
-            raise ResourceException(status_code=404, message='Kaffeestärke kann nicht größer als 100 Prozent sein.')
-        bus = SMBus(1)
-        reg_write_dac = 0x40
-        address = 0x60
-        
-        # Create our 12-bit number representing relative voltage
-        max_voltage = 0xFFF
-        rate = coffee_strength_in_percent / 100
-        voltage = int(max_voltage * rate)
-
-        # Shift everything left by 4 bits and separate bytes
-        msg = (voltage & 0xff0) >> 4
-        msg = [msg, (msg & 0xf) << 4]
-
-        # Write out I2C command: address, reg_write_dac, msg[0], msg[1]
-        bus.write_i2c_block_data(address, reg_write_dac, msg)
-
+        address = I2C_ADDRESS_MAPPINGS['COFFEE_STRENGTH']
+        bus_number = I2C_BUS_NUMBER
+        self.set_dac_value(bus_number=bus_number, address=address, percent_value=coffee_strength_in_percent, sensor_name='Coffee Strength')
 
     def make_coffee(self, doses: int):
         if doses == 1:
@@ -103,9 +90,41 @@ class CoffeeMachineHardwareAPI:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(pin, GPIO.OUT)
         GPIO.output(pin, True)
-        time.sleep(DURATION_IN_SEC)
+        time.sleep(BUTTON_PRESS_DURATION)
         GPIO.cleanup()
+    
+    def set_dac_value(self, bus_number: int, address: int, percent_value: int, sensor_name: str='Unknown'):
+        if percent_value > 100:
+            raise ResourceException(status_code=404, message='Percent value of sensor {} can not be greater than 100.'.format(sensor_name))
 
+        if address is None:
+            logger.warning('Sensor {} i2c bus address is not configured.'.format(sensor_name))
+            return
+
+        bus = SMBus(bus_number)
+        reg_write_dac = 0x40
+        
+        # Create our 12-bit number representing relative voltage
+        max_voltage = 0xFFF
+        rate = percent_value / 100
+        voltage = int(max_voltage * rate) & 0xFFF
+
+        # Shift everything left by 4 bits and separate bytes
+        msg = (voltage & 0xff0) >> 4
+        msg = [msg, (msg & 0xf) << 4]
+
+        # Write out I2C command: address, reg_write_dac, msg[0], msg[1]
+        bus.write_i2c_block_data(address, reg_write_dac, msg)
+        time.sleep(I2C_DELAY)
+
+I2C_BUS_NUMBER = 1
+
+I2C_ADDRESS_MAPPINGS = {
+    'WATER': None,
+    'COFFEE_STRENGTH': 0x60
+}
+
+I2C_DELAY = 0.05
 
 GPIO_PINS = {
     'ONE_DOSE': 26,
@@ -116,7 +135,7 @@ GPIO_PINS = {
     'MAINTENANCE': None
 }
 
-DURATION_IN_SEC = 2
+BUTTON_PRESS_DURATION = 2
 
 ROUTES = {
     'COFFEE_MACHINE': '{base_url}/api/coffee/machines/{id}',
