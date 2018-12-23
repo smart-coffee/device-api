@@ -124,7 +124,7 @@ class CoffeeMachineHardwareAPI:
 I2C_BUS_NUMBER = 1
 
 I2C_ADDRESS_MAPPINGS = {
-    'WATER': None,
+    'WATER': 0x61,
     'COFFEE_STRENGTH': 0x60
 }
 

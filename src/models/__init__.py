@@ -152,3 +152,10 @@ class DeviceJob:
             'doses': fields.Integer,
             'coffee_product_id': fields.Integer
         }
+
+
+class I2CBus:
+    def __init__(self, *args, **kwargs):
+        self.bus_number = None if not ('bus_number' in kwargs) else kwargs['bus_number']
+        self.bus_delay = None if not ('bus_delay' in kwargs) else kwargs['bus_delay']
+        self.addresses = None if not ('addresses' in kwargs) else kwargs['addresses']
