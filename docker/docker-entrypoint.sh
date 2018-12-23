@@ -27,4 +27,5 @@ SSL_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt'
 EOF
 fi
 
+modprobe i2c-dev
 python -u app.py
