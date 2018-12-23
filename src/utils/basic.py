@@ -6,7 +6,7 @@ def validate_percent_value(value: int, accuracy: int = 0) -> bool:
 
 def is_percent_value(value: int, accuracy: int = 0) -> bool:
     if accuracy < 0:
-        raise ValueError('Accuracy has to be greater or equal to zero'.)
+        raise ValueError('Accuracy has to be greater or equal to zero.')
     
     if value < 0:
         raise ValueError('Percent value has to be greater or equal to zero.')
