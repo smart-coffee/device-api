@@ -74,7 +74,7 @@ class CoffeeMachineHardwareAPI:
         # Create our 12-bit number representing relative voltage
         max_voltage = 0xFFF
         rate = coffee_strength_in_percent / 100
-        voltage = (max_voltage * rate) & 0xFFF
+        voltage = int(max_voltage * rate)
 
         # Shift everything left by 4 bits and separate bytes
         msg = (voltage & 0xff0) >> 4
