@@ -15,7 +15,7 @@ class DeviceJobController:
             **(settings.__dict__)
         }
         water_in_percent = create_job.water_in_percent
-        water_in_percent = get_percent_value(value=water_in_percent, accuracy=2)
+        water_in_percent = get_percent_value(value=water_in_percent, accuracy=3)
         coffee_strength_in_percent = create_job.coffee_strength_in_percent
         doses = create_job.doses
         CM_API.set_water_in_percent(water_in_percent=water_in_percent)
