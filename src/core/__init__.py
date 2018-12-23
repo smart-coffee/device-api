@@ -13,6 +13,7 @@ from models import DeviceSettings, DeviceStatus
 from config.logger import logging, get_logger_name
 from config.environment_tools import get_webapi_domain, get_webapi_port, get_ssl_ca_bundle
 from config.flask_config import ResourceException
+from utils.basic import is_percent
 
 
 logger = logging.getLogger(get_logger_name(__name__))
@@ -98,7 +99,7 @@ class CoffeeMachineHardwareAPI:
             logger.warning('Sensor {} i2c bus address is not configured.'.format(sensor_name))
             return
 
-        if percent_value > 100:
+        if not is_percent(value=percent_value):
             raise ResourceException(status_code=400, message='Percent value of sensor {} can not be greater than 100.'.format(sensor_name))
 
 
