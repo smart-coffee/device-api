@@ -13,7 +13,11 @@ class DeviceJobController:
             **(create_job.__dict__),
             **(settings.__dict__)
         }
+        water_in_percent = create_job.water_in_percent
+        coffee_strength_in_percent = create_job.coffee_strength_in_percent
         doses = create_job.doses
+        CM_API.set_water_in_percent(water_in_percent=water_in_percent)
+        CM_API.set_coffee_strength_in_percent(coffee_strength_in_percent=coffee_strength_in_percent)
         CM_API.make_coffee(doses=doses)
         response = WEB_API.create_job(token, create_job_body)
         response_json = response.json()

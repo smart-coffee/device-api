@@ -7,6 +7,7 @@ import time
 import RPi.GPIO as GPIO
 
 from pathlib import Path
+from smbus2 import SMBus
 
 from models import DeviceSettings, DeviceStatus
 from config.logger import logging, get_logger_name
@@ -59,6 +60,29 @@ class CoffeeMachineHardwareAPI:
     def read_status(self):
         self._status = DeviceStatus()
         logger.warning('Should read status of coffee machine here and set it to self._status')
+
+    def set_water_in_percent(self, water_in_percent: int):
+        pass
+    
+    def set_coffee_strength_in_percent(self, coffee_strength_in_percent: int):
+        if coffee_strength_in_percent > 100:
+            raise ResourceException(status_code=404, message='Kaffeestärke kann nicht größer als 100 Prozent sein.')
+        bus = SMBus(1)
+        reg_write_dac = 0x40
+        address = 0x60
+        
+        # Create our 12-bit number representing relative voltage
+        max_voltage = 0xFFF
+        rate = coffee_strength_in_percent / 100
+        voltage = max_voltage * rate
+
+        # Shift everything left by 4 bits and separate bytes
+        msg = (voltage & 0xff0) >> 4
+        msg = [msg, (msg & 0xf) << 4]
+
+        # Write out I2C command: address, reg_write_dac, msg[0], msg[1]
+        bus.write_i2c_block_data(address, reg_write_dac, msg)
+
 
     def make_coffee(self, doses: int):
         if doses == 1:
