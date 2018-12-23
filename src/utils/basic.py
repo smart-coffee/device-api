@@ -21,7 +21,7 @@ def is_percent_value(value: int, accuracy: int = 0) -> bool:
     value = int(value / divisor)
     in_range = value in range(0, 101)
 
-    logger.debug('{0} {1} {2}'.format(divisor, value, in_range))
+    logger.debug('Accuracy: {0}, Value: {1}, In Range: {2}'.format(divisor, value, in_range))
     
     return in_range
 
