@@ -94,12 +94,13 @@ class CoffeeMachineHardwareAPI:
         GPIO.cleanup()
     
     def set_dac_value(self, bus_number: int, address: int, percent_value: int, sensor_name: str='Unknown'):
-        if percent_value > 100:
-            raise ResourceException(status_code=404, message='Percent value of sensor {} can not be greater than 100.'.format(sensor_name))
-
         if address is None:
             logger.warning('Sensor {} i2c bus address is not configured.'.format(sensor_name))
             return
+
+        if percent_value > 100:
+            raise ResourceException(status_code=400, message='Percent value of sensor {} can not be greater than 100.'.format(sensor_name))
+
 
         bus = SMBus(bus_number)
         reg_write_dac = 0x40
