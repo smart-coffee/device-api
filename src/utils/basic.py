@@ -17,7 +17,7 @@ def is_percent_value(value: int, accuracy: int = 0) -> bool:
     if value < 0:
         raise ValueError('Percent value has to be greater or equal to zero.')
     
-    divisor = 100 * (10 ** accuracy)
+    divisor = 10 ** accuracy
     value = int(value / divisor)
     in_range = value in range(0, 101)
 
