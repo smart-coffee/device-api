@@ -1,10 +1,10 @@
-import serial
-ser = serial.Serial('/dev/ttyS0',115200)
+# import serial
+# ser = serial.Serial('/dev/ttyS0',115200)
 
-print(ser)
+# print(ser)
 
-while True:
-    print(ser.readline().decode("utf-8"))
+# while True:
+#     print(ser.readline().decode("utf-8"))
 
 #####
 
