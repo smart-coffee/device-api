@@ -8,6 +8,7 @@ flask-cors
 email_validator
 requests
 RPi.Gpio
+smbus2
 # flask-sqlalchemy
 # pymysql
 # factory_boy
