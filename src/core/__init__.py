@@ -85,10 +85,10 @@ class CoffeeMachineHardwareAPI:
 
 GPIO_PINS = {
     'ONE_DOSE': 26,
-    'TWO_DOSES': 16,
+    'TWO_DOSES': 12,
     'STEAM': None,
     'ECO': None,
-    'POWER': 12,
+    'POWER': 16,
     'MAINTENANCE': None
 }
 
