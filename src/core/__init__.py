@@ -104,7 +104,7 @@ class CoffeeMachineHardwareAPI:
         except ValueError as err:
             raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, percent_value))
 
-        logger.debug('Instanciating SMBus: {}'.format(bus_number)
+        logger.debug('Instanciating SMBus: {}'.format(bus_number))
         bus = SMBus(bus_number)
         logger.debug('done.')
         reg_write_dac = 0x40
