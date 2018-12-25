@@ -120,7 +120,7 @@ class CoffeeMachineHardwareAPI:
         msg = [msg, (msg & 0xf) << 4]
 
         # Write out I2C command: address, reg_write_dac, msg[0], msg[1]
-        logger.debug('Writing block data to i2c address "{0}": [0] => {1}, [1] => {2}'.format(address, msg[0], msg[1]))
+        logger.debug('Writing block data to i2c address ', hex(address), ': [0] => ', hex(msg[0]), ', [1] => ', hex(msg[1]))
         bus.write_i2c_block_data(address, reg_write_dac, msg)
         time.sleep(I2C_DELAY)
         logger.debug('done.')
