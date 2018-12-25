@@ -104,22 +104,26 @@ class CoffeeMachineHardwareAPI:
         except ValueError as err:
             raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, percent_value))
 
-
+        logger.debug('Instanciating SMBus: {}'.format(bus_number)
         bus = SMBus(bus_number)
+        logger.debug('done.')
         reg_write_dac = 0x40
         
         # Create our 12-bit number representing relative voltage
         max_voltage = 0xFFF
         rate = percent_value / 100
         voltage = int(max_voltage * rate) & 0xFFF
+        logger.debug('Voltage: {0} ({1} %)'.format(voltage, percent_value))
 
         # Shift everything left by 4 bits and separate bytes
         msg = (voltage & 0xff0) >> 4
         msg = [msg, (msg & 0xf) << 4]
 
         # Write out I2C command: address, reg_write_dac, msg[0], msg[1]
+        logger.debug('Writing block data to i2c address "{0}": [0] => {1}, [1] => {2}'.format(address, msg[0], msg[1]))
         bus.write_i2c_block_data(address, reg_write_dac, msg)
         time.sleep(I2C_DELAY)
+        logger.debug('done.')
 
 I2C_BUS_NUMBER = 1
 
