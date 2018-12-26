@@ -26,7 +26,7 @@ import time
 
 
 class GPIORead:
-    def __init__(gpio_number: int, value:int, time_in_milli: int):
+    def __init__(self, gpio_number: int, value: bool, time_in_milli: int):
         self.gpio_number = gpio_number
         self.value = value
         self.time_in_milli = time_in_milli
