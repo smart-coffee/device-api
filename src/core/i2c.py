@@ -32,7 +32,7 @@ def set_dac_value(bus_number: int, address: int, percent_value: int, i2c_delay, 
     msg = [msg, (msg & 0xf) << 4]
 
     # Write out I2C command: address, reg_write_dac, msg[0], msg[1]
-    logger.debug('Writing block data to i2c address ', hex(address), ': [0] => ', hex(msg[0]), ', [1] => ', hex(msg[1]))
+    logger.debug('Writing block data to i2c address {0}: [0] => {1}, [1] => {2}'.format(str(hex(address)), str(hex(msg[0])), str(hex(msg[1]))))
     bus.write_i2c_block_data(address, reg_write_dac, msg)
     time.sleep(i2c_delay)
     logger.debug('done.')
