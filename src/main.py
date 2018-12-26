@@ -25,20 +25,31 @@ import RPi.GPIO as GPIO
 import time
 
 
-pin = 20
+gpios = {
+    4: [],
+    17: [],
+    27: [],
+    22: [],
+    5: [],
+    6: [],
+    13: [],
+    19: []
+}
+
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 reads = []
 
-for i in range(0, 1001):
-    _val = GPIO.input(pin)
-    _i_str = str(i).zfill(4)
-    _time_in_milli = int(round(time.time() * 1000))
-    reads.append((_val, _i_str, _time_in_milli))
+for gpio, values in gpios.items():
+    for i in range(0, 20):
+        _val = GPIO.input(gpio)
+        _i_str = str(i).zfill(4)
+        _time_in_milli = int(round(time.time() * 1000))
+        reads.append((gpio, _val, _i_str, _time_in_milli))
 
 
 
 for i in reads:
-    print('{0}: {1} {2}'.format(*i))
+    print('{0} {1}: {2} {3}'.format(*i))
