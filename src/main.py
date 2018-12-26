@@ -25,35 +25,44 @@ import RPi.GPIO as GPIO
 import time
 
 
-gpios = {
-    4: False,
-    17: False,
-    27: False,
-    22: False,
-    5: False,
-    6: False,
-    13: False,
-    19: False
-}
+class GPIORead:
+    def __init__(gpio_number: int, value:int, time_in_milli: int):
+        self.gpio_number = gpio_number
+        self.value = value
+        self.time_in_milli = time_in_milli
+    
+    def __repr__(self):
+        #return str(self.__dict__)
+        gpio_number_str = str(self.gpio_number).zfill(2)
+        time_str = self.time_in_milli
+        value_str = self.value
+        return '{0} {1}: {2}'.format(gpio_number_str, time_str, value_str)
+
+
+gpio_numbers = [4, 17, 27, 22, 5, 6, 13, 19]
 
 
 GPIO.setmode(GPIO.BCM)
-for gpio in gpios.keys():
+for gpio in gpio_numbers:
     GPIO.setup(gpio, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 reads = []
 
-for gpio in gpios.keys():
+for gpio in gpio_numbers:
+    _found_high = False
     for i in range(0, 100):
         _val = GPIO.input(gpio)
         if _val == GPIO.HIGH:
-            gpios[gpio] = True
-            #_i_str = str(i).zfill(4)
+            _found_high = True
             _time_in_milli = int(round(time.time() * 1000))
-            reads.append((gpio, _time_in_milli))
+            reads.append(GPIORead(gpio_number=gpio, value=True, time_in_milli=_time_in_milli))
             break
+    if not _found_high:
+        _time_in_milli = int(round(time.time() * 1000))
+        reads.append(GPIORead(gpio_number=gpio, value=False, time_in_milli=_time_in_milli))
+
 
 
 
 for i in reads:
-    print('{0} {1}: {2}'.format(str(i[0]).zfill(2), i[1], gpios[i[0]]))
+    print(i)
