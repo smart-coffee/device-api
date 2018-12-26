@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     }
 
     for(i = 0; i < ARRAY_LENGTH; i++){
-        printf("%d %d %d", i, reads[i][0], reads[i][1]);
+        printf("%d %d %d\n", i, reads[i][0], reads[i][1]);
     }
 
     
