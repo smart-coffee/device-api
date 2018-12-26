@@ -45,6 +45,9 @@ RUN pip install --upgrade pip setuptools && pip install -r /requirements.txt
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
 
+# Compile c library
+RUN gcc c_lib/read_gpio.c -o /usr/local/bin/read_gpio
+
 # switch on systemd init system in container
 ENV INITSYSTEM on
 
