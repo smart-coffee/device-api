@@ -62,13 +62,13 @@ class GPIORead:
         return gpio_number_self < gpio_number_other
 
 
-def read_status(gpio_numbers: List[int], check_cycles: int = 1) -> List[GPIORead]:
+def read_gpio_list(gpio_numbers: List[int], sample_rate: int = 100, check_cycles: int = 1) -> List[GPIORead]:
     if check_cycles < 1:
         raise ValueError('Check cycles must be greater than 0')
     
     read_cycles = []
     for i in range(0, check_cycles):
-        single_read = single_read_cycle(gpio_numbers=gpio_numbers, sample_rate=100)
+        single_read = _read_gpio_list_single_cycle(gpio_numbers=gpio_numbers, sample_rate=sample_rate)
         read_cycles.append(single_read)
     
     base_cycle = read_cycles[0]
@@ -80,7 +80,7 @@ def read_status(gpio_numbers: List[int], check_cycles: int = 1) -> List[GPIORead
     return base_cycle
 
     
-def single_read_cycle(gpio_numbers: List[int], sample_rate: int = 100) -> List[GPIORead]:
+def _read_gpio_list_single_cycle(gpio_numbers: List[int], sample_rate: int) -> List[GPIORead]:
     GPIO.setmode(GPIO.BCM)
     for gpio in gpio_numbers:
         GPIO.setup(gpio, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
@@ -104,6 +104,6 @@ def single_read_cycle(gpio_numbers: List[int], sample_rate: int = 100) -> List[G
 
 
 gpio_numbers = [4, 17, 27, 22, 5, 6, 13, 19]
-reads = read_status(gpio_numers=gpio_numbers, check_cycles=5)
+reads = read_gpio_list(gpio_numbers=gpio_numbers, sample_rate=500, check_cycles=5)
 for i in reads:
     print(i)
