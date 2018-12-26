@@ -2,18 +2,15 @@ import json
 import os
 import errno
 import requests
-import time
-
-import RPi.GPIO as GPIO
 
 from pathlib import Path
-from smbus2 import SMBus
 
 from models import DeviceSettings, DeviceStatus
 from config.logger import logging, get_logger_name
 from config.environment_tools import get_webapi_domain, get_webapi_port, get_ssl_ca_bundle
 from config.flask_config import ResourceException
-from utils.basic import validate_percent_value
+from core.gpio import set_gpio
+from core.i2c import set_dac_value
 
 
 logger = logging.getLogger(get_logger_name(__name__))
@@ -65,12 +62,18 @@ class CoffeeMachineHardwareAPI:
     def set_water_in_percent(self, water_in_percent: int):
         address = I2C_ADDRESS_MAPPINGS['WATER']
         bus_number = I2C_BUS_NUMBER
-        self.set_dac_value(bus_number=bus_number, address=address, percent_value=water_in_percent, sensor_name='Water')
+        try:
+            set_dac_value(bus_number=bus_number, address=address, percent_value=water_in_percent, i2c_delay=I2C_DELAY, sensor_name='Water')
+        except ValueError as err:
+            raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, percent_value))
     
     def set_coffee_strength_in_percent(self, coffee_strength_in_percent: int):
         address = I2C_ADDRESS_MAPPINGS['COFFEE_STRENGTH']
         bus_number = I2C_BUS_NUMBER
-        self.set_dac_value(bus_number=bus_number, address=address, percent_value=coffee_strength_in_percent, sensor_name='Coffee Strength')
+        try:
+            set_dac_value(bus_number=bus_number, address=address, percent_value=coffee_strength_in_percent, i2c_delay=I2C_DELAY, sensor_name='Coffee Strength')
+        except ValueError as err:
+            raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, percent_value))
 
     def make_coffee(self, doses: int):
         if doses == 1:
@@ -88,42 +91,8 @@ class CoffeeMachineHardwareAPI:
         self.press_button(pin = pin)
     
     def press_button(self, pin: int):
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(pin, GPIO.OUT)
-        GPIO.output(pin, True)
-        time.sleep(BUTTON_PRESS_DURATION)
-        GPIO.cleanup()
+        set_gpio(gpio_number=pin, duration_in_sec=BUTTON_PRESS_DURATION)
     
-    def set_dac_value(self, bus_number: int, address: int, percent_value: int, sensor_name: str='Unknown'):
-        if address is None:
-            logger.warning('Sensor {} i2c bus address is not configured.'.format(sensor_name))
-            return
-
-        try:
-            validate_percent_value(value=percent_value)
-        except ValueError as err:
-            raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, percent_value))
-
-        logger.debug('Instanciating SMBus: {}'.format(bus_number))
-        bus = SMBus(bus_number)
-        logger.debug('done.')
-        reg_write_dac = 0x40
-        
-        # Create our 12-bit number representing relative voltage
-        max_voltage = 0xFFF
-        rate = percent_value / 100
-        voltage = int(max_voltage * rate) & 0xFFF
-        logger.debug('Voltage: {0} ({1} %)'.format(voltage, percent_value))
-
-        # Shift everything left by 4 bits and separate bytes
-        msg = (voltage & 0xff0) >> 4
-        msg = [msg, (msg & 0xf) << 4]
-
-        # Write out I2C command: address, reg_write_dac, msg[0], msg[1]
-        logger.debug('Writing block data to i2c address ', hex(address), ': [0] => ', hex(msg[0]), ', [1] => ', hex(msg[1]))
-        bus.write_i2c_block_data(address, reg_write_dac, msg)
-        time.sleep(I2C_DELAY)
-        logger.debug('done.')
 
 I2C_BUS_NUMBER = 1
 
