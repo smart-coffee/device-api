@@ -61,19 +61,21 @@ class CoffeeMachineHardwareAPI:
 
     def set_water_in_percent(self, water_in_percent: int):
         address = I2C_ADDRESS_MAPPINGS['WATER']
+        sensor_name = 'Water'
         bus_number = I2C_BUS_NUMBER
         try:
-            set_dac_value(bus_number=bus_number, address=address, percent_value=water_in_percent, i2c_delay=I2C_DELAY, sensor_name='Water')
+            set_dac_value(bus_number=bus_number, address=address, percent_value=water_in_percent, i2c_delay=I2C_DELAY, sensor_name=sensor_name)
         except ValueError as err:
-            raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, percent_value))
+            raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, water_in_percent))
     
     def set_coffee_strength_in_percent(self, coffee_strength_in_percent: int):
         address = I2C_ADDRESS_MAPPINGS['COFFEE_STRENGTH']
+        sensor_name = 'Coffee Strength'
         bus_number = I2C_BUS_NUMBER
         try:
-            set_dac_value(bus_number=bus_number, address=address, percent_value=coffee_strength_in_percent, i2c_delay=I2C_DELAY, sensor_name='Coffee Strength')
+            set_dac_value(bus_number=bus_number, address=address, percent_value=coffee_strength_in_percent, i2c_delay=I2C_DELAY, sensor_name=sensor_name)
         except ValueError as err:
-            raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, percent_value))
+            raise ResourceException(status_code=400, message='Percent value of sensor {0} is invalid: {1}'.format(sensor_name, coffee_strength_in_percent))
 
     def make_coffee(self, doses: int):
         if doses == 1:
