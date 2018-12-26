@@ -11,6 +11,7 @@ FROM resin/%%RESIN_MACHINE_NAME%%-python:3
 #RUN apt-get update && apt-get install -yq \
 #    python3-gpiozero python-gpiozero python-rpi.gpio python-spidev python3-rpi.gpio python3-spidev
 
+# Install necessary ssl certificates and i2c dependencies
 RUN apt-get update \
     && curl https://letsencrypt.org/certs/isrgrootx1.pem.txt -o /usr/local/share/ca-certificates/isrgrootx1.crt \
     && curl https://letsencrypt.org/certs/letsencryptauthorityx1.pem.txt -o /usr/local/share/ca-certificates/letsencryptauthorityx1.crt \
@@ -21,6 +22,15 @@ RUN apt-get update \
     && curl https://letsencrypt.org/certs/lets-encrypt-x4-cross-signed.pem.txt -o /usr/local/share/ca-certificates/letsencryptx4.crt \
     && update-ca-certificates \
     && apt-get install i2c-tools
+
+# Install C library pigpio
+RUN rm pigpio.tar \
+    && rm -rf PIGPIO \
+    && wget abyz.me.uk/rpi/pigpio/pigpio.tar \
+    && tar xf pigpio.tar \
+    && cd PIGPIO \
+    && make \
+    && make install
 
 
 # Set our working directory
