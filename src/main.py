@@ -51,7 +51,7 @@ for gpio in gpios.keys():
             #_i_str = str(i).zfill(4)
             _time_in_milli = int(round(time.time() * 1000))
             reads.append((gpio, _time_in_milli))
-            continue
+            break
 
 
 
