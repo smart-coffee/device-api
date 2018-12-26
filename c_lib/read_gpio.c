@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <pigpio.h>
 
+#define ARRAY_LENGTH 1000
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +17,7 @@ int main(int argc, char *argv[])
    int pin = 20;
    int val = -1;
    int i = 0;
+   int reads[ARRAY_LENGTH][2];
 
    if (gpioInitialise() < 0)
    {
@@ -42,8 +44,13 @@ int main(int argc, char *argv[])
 //       /* Mirror GPIO24 from GPIO23 */
 //       gpioWrite(24, );
 //    }
-    for(i = 0; i < 1000; i++) {
-        printf("%d: %d\n", i, gpioRead(pin));
+    for(i = 0; i < ARRAY_LENGTH; i++) {
+        reads[i][0] = gpioRead(pin);
+        reads[i][1] = clock();
+    }
+
+    for(i = 0; i < ARRAY_LENGTH; i++){
+        printf("%d %d %d", i, reads[i][0], reads[i][1]);
     }
 
     
