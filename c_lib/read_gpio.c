@@ -13,8 +13,8 @@
 
 int main(int argc, char *argv[])
 {
-   double start;
- //  int pin = 20;
+ //  double start;
+   int pin = 20;
  //  int val = -1;
    int i = 0;
    int reads[ARRAY_LENGTH][2];
