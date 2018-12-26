@@ -30,8 +30,15 @@ pin = 20
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
+reads = []
+
 for i in range(0, 1001):
     _val = GPIO.input(pin)
     _i_str = str(i).zfill(4)
     _time_in_milli = int(round(time.time() * 1000))
-    print('{0}: {1} {2}'.format(_i_str, _val, _time_in_milli)
+    reads.append((_val, _i_str, _time_in_milli))
+
+
+
+for i in reads:
+    print('{0}: {1} {2}'.format(*i))
