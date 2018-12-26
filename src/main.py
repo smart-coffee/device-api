@@ -38,7 +38,8 @@ gpios = {
 
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+for gpio in gpios.keys():
+    GPIO.setup(gpio, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 reads = []
 
