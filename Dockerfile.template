@@ -46,7 +46,7 @@ RUN pip install --upgrade pip setuptools && pip install -r /requirements.txt
 COPY . ./
 
 # Compile c library
-RUN gcc c_lib/read_gpio.c -o /usr/local/bin/read_gpio
+RUN gcc -Wall -pthread -o /usr/local/bin/read_gpio c_lib/read_gpio.c -lpigpio -lrt
 
 # switch on systemd init system in container
 ENV INITSYSTEM on
