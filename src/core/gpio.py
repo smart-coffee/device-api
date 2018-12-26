@@ -25,7 +25,10 @@ class GPIORead:
         value_other = other.value
         value_self = self.value
         return value_self == value_other
-    
+
+    def __ne__(self, other):
+        return not(self == other)
+
     def __hash__(self):
         return hash((self.gpio_number, self.value))
     
@@ -33,11 +36,21 @@ class GPIORead:
         gpio_number_other = other.gpio_number
         gpio_number_self = self.gpio_number
         return gpio_number_self < gpio_number_other
-    
+
+    def __le__(self, other):
+        gpio_number_other = other.gpio_number
+        gpio_number_self = self.gpio_number
+        return gpio_number_self <= gpio_number_other
+
     def __gt__(self, other):
         gpio_number_other = other.gpio_number
         gpio_number_self = self.gpio_number
-        return gpio_number_self < gpio_number_other
+        return gpio_number_self > gpio_number_other
+
+    def __ge__(self, other):
+        gpio_number_other = other.gpio_number
+        gpio_number_self = self.gpio_number
+        return gpio_number_self >= gpio_number_other
 
 
 def read_gpio_list(gpio_numbers: List[int], sample_rate: int = 100, check_cycles: int = 1) -> List[GPIORead]:
