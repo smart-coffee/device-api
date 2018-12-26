@@ -44,7 +44,7 @@ for gpio in gpios.keys():
 reads = []
 
 for gpio in gpios.keys():
-    for i in range(0, 20):
+    for i in range(0, 50):
         _val = GPIO.input(gpio)
         if _val == GPIO.HIGH:
             gpios[gpio] = True
