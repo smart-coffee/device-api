@@ -9,7 +9,7 @@ from utils.basic import validate_percent_value
 logger = logging.getLogger(get_logger_name(__name__))
 
 
-def set_dac_value(self, bus_number: int, address: int, percent_value: int, i2c_delay, sensor_name: str='Unknown'):
+def set_dac_value(bus_number: int, address: int, percent_value: int, i2c_delay, sensor_name: str='Unknown'):
     if address is None:
         logger.warning('Sensor {} i2c bus address is not configured.'.format(sensor_name))
         return
