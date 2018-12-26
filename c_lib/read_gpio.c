@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
    double start;
    int pin = 20;
    int val = -1;
+   int i = 0;
 
    if (gpioInitialise() < 0)
    {
@@ -41,8 +42,11 @@ int main(int argc, char *argv[])
 //       /* Mirror GPIO24 from GPIO23 */
 //       gpioWrite(24, );
 //    }
-    val = gpioRead(pin);
-    printf("%d\n", val);
+    for(i = 0; i < 1000; i++) {
+        printf("%d: %d\n", i, gpioRead(pin));
+    }
+
+    
 
    /* Stop DMA, release resources */
    gpioTerminate();
