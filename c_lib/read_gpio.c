@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
    double start;
    int pin = 20;
-   int *val = NULL;
+   int val = -1;
 
    if (gpioInitialise() < 0)
    {
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 //       gpioWrite(24, );
 //    }
     val = gpioRead(pin);
-    printf("%d\n", *val);
+    printf("%d\n", val);
 
    /* Stop DMA, release resources */
    gpioTerminate();
