@@ -26,14 +26,14 @@ import time
 
 
 gpios = {
-    4: [],
-    17: [],
-    27: [],
-    22: [],
-    5: [],
-    6: [],
-    13: [],
-    19: []
+    4: False,
+    17: False,
+    27: False,
+    22: False,
+    5: False,
+    6: False,
+    13: False,
+    19: False
 }
 
 
@@ -43,14 +43,17 @@ for gpio in gpios.keys():
 
 reads = []
 
-for gpio, values in gpios.items():
+for gpio in gpios.keys():
     for i in range(0, 20):
         _val = GPIO.input(gpio)
-        _i_str = str(i).zfill(4)
-        _time_in_milli = int(round(time.time() * 1000))
-        reads.append((gpio, _val, _i_str, _time_in_milli))
+        if _val == GPIO.HIGH:
+            gpios[gpio] = True
+            #_i_str = str(i).zfill(4)
+            _time_in_milli = int(round(time.time() * 1000))
+            reads.append((gpio, _time_in_milli))
+            continue
 
 
 
 for i in reads:
-    print('{0} {1}: {2} {3}'.format(*i))
+    print('{0} {1}: {2}'.format(str(i[0]).zfill(2), i[1], gpios[i[0]]))
