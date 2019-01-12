@@ -103,7 +103,16 @@ def _read_gpio_list_single_cycle(gpio_numbers: List[int], sample_rate: int) -> L
     return reads
 
 
-gpio_numbers = [4, 17, 27, 22, 5, 6, 13, 19]
+
+# 23 - eco
+# 22 - at
+# 24 - warning
+# 10 - dampf
+# 8 - 2tassen
+# 11 - bohnen
+# 19 - wasser
+# 26 - 1tasse
+gpio_numbers = [23, 22, 24, 10, 8, 11, 19, 26]
 reads = read_gpio_list(gpio_numbers=gpio_numbers, sample_rate=500, check_cycles=5)
 for i in reads:
     print(i)
