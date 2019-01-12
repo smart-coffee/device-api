@@ -98,7 +98,7 @@ class CoffeeMachineHardwareAPI:
     
     def press_button(self, pin: int):
         session = self._session
-        set_gpio(gpio_number=pin, value=True, duration_in_sec=BUTTON_PRESS_DURATION, session=session)
+        set_gpio(gpio_number=pin, value=False, duration_in_sec=BUTTON_PRESS_DURATION, session=session)
     
 
 class RemoteSession:
