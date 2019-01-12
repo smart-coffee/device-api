@@ -1,5 +1,5 @@
 from models import DeviceStatus, EditDeviceStatus, DeviceRuntimeState
-from core import CM_API
+from core import CM_API, RemoteSession
 from config.flask_config import ResourceException
 
 class DeviceStatusController:
@@ -7,12 +7,18 @@ class DeviceStatusController:
         return CM_API.status
     
     def set_status(self, token:str, status:EditDeviceStatus) -> DeviceStatus:
+        session = RemoteSession(cm_hw_api=CM_API)
+        session.open()
+
         state = status.device_runtime_state
         if state == DeviceRuntimeState.ON:
             self.turn_on(token)
         if state == DeviceRuntimeState.OFF:
             self.turn_off(token)
-        return CM_API.status
+
+        new_status = CM_API.status
+        session.close()
+        return new_status
 
     def turn_on(self, token: str) -> DeviceStatus:
         status = CM_API.status

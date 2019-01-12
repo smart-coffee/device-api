@@ -9,7 +9,7 @@ from models import DeviceSettings, DeviceStatus
 from config.logger import logging, get_logger_name
 from config.environment_tools import get_webapi_domain, get_webapi_port, get_ssl_ca_bundle
 from config.flask_config import ResourceException
-from core.gpio import set_gpio
+from core.gpio import set_gpio, RemoteGPIOSession
 from core.i2c import set_dac_value
 
 
@@ -21,6 +21,7 @@ class CoffeeMachineHardwareAPI:
 
     def __init__(self):
         self.file_path = CoffeeMachineHardwareAPI._settings_file
+        self._session = None
 
     @property
     def settings(self) -> DeviceSettings:
@@ -59,6 +60,9 @@ class CoffeeMachineHardwareAPI:
         self._status = DeviceStatus()
         logger.warning('Should read status of coffee machine here and set it to self._status')
 
+    def use_session(self, session: RemoteSession):
+        self._session = session
+
     def set_water_in_percent(self, water_in_percent: int):
         address = I2C_ADDRESS_MAPPINGS['WATER']
         sensor_name = 'Water'
@@ -93,7 +97,24 @@ class CoffeeMachineHardwareAPI:
         self.press_button(pin = pin)
     
     def press_button(self, pin: int):
-        set_gpio(gpio_number=pin, duration_in_sec=BUTTON_PRESS_DURATION)
+        session = self._session
+        set_gpio(gpio_number=pin, value=True, duration_in_sec=BUTTON_PRESS_DURATION, session=session)
+    
+
+class RemoteSession:
+    def __init__(self, cm_hw_api: CoffeeMachineHardwareAPI, *args, **kwargs):
+        self._api = cm_hw_api
+        _relais_gpio = GPIO_PINS['RELAIS'] 
+        self._gpio_session = RemoteGPIOSession(relais_gpio=_relais_gpio, relais_value=True)
+    
+    def open(self):
+        self._api.use_session(self)
+        self._gpio_session.open()
+    
+    def close(self):
+        self._api.use_session(None)
+        self._gpio_session.close()
+    
     
 
 I2C_BUS_NUMBER = 1
@@ -106,12 +127,13 @@ I2C_ADDRESS_MAPPINGS = {
 I2C_DELAY = 0.05
 
 GPIO_PINS = {
-    'ONE_DOSE': 26,
-    'TWO_DOSES': 12,
-    'STEAM': None,
-    'ECO': None,
-    'POWER': 16,
-    'MAINTENANCE': None
+    'ONE_DOSE': 17,
+    'TWO_DOSES': 27,
+    'STEAM': 14,
+    'ECO': 18,
+    'POWER': 4,
+    'MAINTENANCE': 15,
+    'RELAIS': 21
 }
 
 BUTTON_PRESS_DURATION = 2
