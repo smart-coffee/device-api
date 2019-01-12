@@ -60,7 +60,7 @@ class CoffeeMachineHardwareAPI:
         self._status = DeviceStatus()
         logger.warning('Should read status of coffee machine here and set it to self._status')
 
-    def use_session(self, session: RemoteSession):
+    def use_session(self, session):
         self._session = session
 
     def set_water_in_percent(self, water_in_percent: int):
