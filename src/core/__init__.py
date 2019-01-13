@@ -3,13 +3,14 @@ import os
 import errno
 import requests
 
+from typing import List
 from pathlib import Path
 
-from models import DeviceSettings, DeviceStatus
+from models import DeviceSettings, DeviceStatus, DeviceRuntimeState
 from config.logger import logging, get_logger_name
 from config.environment_tools import get_webapi_domain, get_webapi_port, get_ssl_ca_bundle
 from config.flask_config import ResourceException
-from core.gpio import set_gpio, RemoteGPIOSession
+from core.gpio import set_gpio, RemoteGPIOSession, read_gpio_list, GPIORead
 from core.i2c import set_dac_value
 
 
@@ -57,8 +58,66 @@ class CoffeeMachineHardwareAPI:
             self._settings = settings
     
     def read_status(self):
-        self._status = DeviceStatus()
-        logger.warning('Should read status of coffee machine here and set it to self._status')
+        gpio_numbers = list(GPIO_IN_PINS.values())
+        session = self._session
+        reads = read_gpio_list(gpio_numbers=gpio_numbers, sample_rate=SAMPLE_RATE, check_cycles=CHECK_CYCLES, session=session)
+        status = DeviceStatus()
+
+        # Check water LED
+        water_gpio = GPIO_IN_PINS['WATER']
+        water_led = self._read_single_status(gpio_reads=reads, gpio_number=water_gpio, fallback=True, status_name='Water LED')
+        
+        # Check coffee grounds LED
+        coffee_grounds_gpio = GPIO_IN_PINS['COFFEE_GROUNDS_CONTAINER']
+        coffee_grounds_led = self._read_single_status(gpio_reads=reads, gpio_number=coffee_grounds_gpio, fallback=True, status_name='Coffee Grounds Container LED')
+
+        # Check one dose LED
+        one_dose_gpio = GPIO_IN_PINS['ONE_DOSE']
+        one_dose_led = self._read_single_status(gpio_reads=reads, gpio_number=one_dose_gpio, fallback=False, status_name='One Dose LED')
+
+        # Check two doses LED
+        two_doses_gpio = GPIO_IN_PINS['TWO_DOSES']
+        two_doses_led = self._read_single_status(gpio_reads=reads, gpio_number=two_doses_gpio, fallback=False, status_name='Two Doses LED')
+
+        # Check warning LED
+        warning_gpio = GPIO_IN_PINS['WARNING']
+        warning_led = self._read_single_status(gpio_reads=reads, gpio_number=warning_gpio, fallback=True, status_name='Warning LED')
+
+        # Steam LED
+        steam_gpio = GPIO_IN_PINS['STEAM']
+        steam_led = self._read_single_status(gpio_reads=reads, gpio_number=steam_gpio, fallback=False, status_name='Steam LED')
+
+        # Check maintenance LED
+        maintenance_gpio = GPIO_IN_PINS['MAINTENANCE']
+        maintenance_led = self._read_single_status(gpio_reads=reads, gpio_number=maintenance_gpio, fallback=True, status_name='Maintenance LED')
+
+        # Check eco LED
+        eco_gpio = GPIO_IN_PINS['ECO']
+        eco_led = self._read_single_status(gpio_reads=reads, gpio_number=eco_gpio, fallback=False, status_name='Eco LED')
+
+        # Set status
+        status.water_tank_ready = water_led is False
+        status.coffee_grounds_container_ready = coffee_grounds_led is False
+        is_on = one_dose_led and two_doses_led
+        runtime_state = DeviceRuntimeState.ON if is_on else DeviceRuntimeState.OFF
+        status.coffee_machine_runtime_state = runtime_state.state_id
+        is_ready = status.water_tank_ready and status.coffee_grounds_container_ready and is_on
+
+        self._status = status
+
+    def _read_single_status(self, gpio_reads: List[GPIORead], gpio_number: int, fallback: bool, status_name: str) -> bool:
+        logger.debug('Start checking {}'.format(status_name))
+        filtered_gpio_read = (r for r in gpio_reads if r.gpio_number = gpio_number)
+
+        return_value = fallback
+        if len(list(filtered_gpio_read) > 0):
+            gpio_read = next(filtered_gpio_read)
+            return_value = gpio_read.value
+        else:
+            logger.debug('GPIO {0} status was not found in result list. Returning fallback: {1}'.format(gpio_number, fallback))
+        logger.debug('Check of {0} (GPIO {1}) done: {2}'.format(status_name, gpio_number, return_value))
+
+        return return_value
 
     def use_session(self, session):
         self._session = session
@@ -83,9 +142,9 @@ class CoffeeMachineHardwareAPI:
 
     def make_coffee(self, doses: int):
         if doses == 1:
-            pin = GPIO_PINS['ONE_DOSE']
+            pin = GPIO_OUT_PINS['ONE_DOSE']
         elif doses == 2:
-            pin = GPIO_PINS['TWO_DOSES']
+            pin = GPIO_OUT_PINS['TWO_DOSES']
         else:
             msg = 'Kaffeeauftrag mit {doses} Dosen nicht möglich.'.format(doses=doses)
             logger.error(msg)
@@ -93,7 +152,7 @@ class CoffeeMachineHardwareAPI:
         self.press_button(pin = pin)
     
     def toggle_power(self):
-        pin = GPIO_PINS['POWER']
+        pin = GPIO_OUT_PINS['POWER']
         self.press_button(pin = pin)
     
     def press_button(self, pin: int):
@@ -104,7 +163,7 @@ class CoffeeMachineHardwareAPI:
 class RemoteSession:
     def __init__(self, cm_hw_api: CoffeeMachineHardwareAPI, *args, **kwargs):
         self._api = cm_hw_api
-        _relais_gpio = GPIO_PINS['RELAIS'] 
+        _relais_gpio = GPIO_OUT_PINS['RELAIS'] 
         self._gpio_session = RemoteGPIOSession(relais_gpio=_relais_gpio, relais_value=True)
     
     def open(self):
@@ -126,7 +185,8 @@ I2C_ADDRESS_MAPPINGS = {
 
 I2C_DELAY = 0.05
 
-GPIO_PINS = {
+# GPIO-OUT mappings
+GPIO_OUT_PINS = {
     'ONE_DOSE': 17,
     'TWO_DOSES': 27,
     'STEAM': 14,
@@ -135,6 +195,27 @@ GPIO_PINS = {
     'MAINTENANCE': 15,
     'RELAIS': 21
 }
+
+# GPIO-IN mappings
+GPIO_IN_PINS = {
+    'ECO': 23,
+    'MAINTENANCE': 22,
+    'WARNING': 24,
+    'STEAM': 10,
+    'TWO_DOSES': 8,
+    'ONE_DOSE': 26,
+    'WATER': 19,
+    'COFFEE_GROUNDS_CONTAINER': 11 
+}
+
+# Reads a single GPIO-IN signal X amount of times and then continues with the next GPIO-IN signal
+SAMPLE_RATE = 500
+
+# 1 x "Check cycle" = read a list of GPIO-IN signals 1 time
+# 2 x "Check cycle" = read a list of GPIO-IN signals 2 times and merge the results
+# If the result of multiple read cycles aren't equal, the missmatching results will be filtered out
+# Higher check cycles will increase the accuracy but also increase the duration of the operation
+CHECK_CYCLES = 5
 
 BUTTON_PRESS_DURATION = 2
 
