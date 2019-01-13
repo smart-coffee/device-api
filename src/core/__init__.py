@@ -107,7 +107,7 @@ class CoffeeMachineHardwareAPI:
 
     def _read_single_status(self, gpio_reads: List[GPIORead], gpio_number: int, fallback: bool, status_name: str) -> bool:
         logger.debug('Start checking {}'.format(status_name))
-        filtered_gpio_read = (r for r in gpio_reads if r.gpio_number = gpio_number)
+        filtered_gpio_read = (r for r in gpio_reads if r.gpio_number == gpio_number)
 
         return_value = fallback
         if len(list(filtered_gpio_read) > 0):
