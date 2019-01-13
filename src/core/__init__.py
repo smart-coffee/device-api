@@ -2,6 +2,7 @@ import json
 import os
 import errno
 import requests
+import threading
 
 from typing import List
 from pathlib import Path
@@ -174,9 +175,24 @@ class RemoteSession:
         self._gpio_session.open()
     
     def close(self):
+        thread = threading.Thread(target=self.close_in_background_if_device_is_ready)
+        thread.daemon = True
+        thread.start()
+    
+    def close_in_background_if_device_is_ready(self):
+        seconds_to_wait = 2
+        max_seconds = 30
+        current_seconds = 0
+        while not self._api.status.device_ready:
+            logger.debug('Device is not ready.')
+            time.sleep(seconds_to_wait)
+            current_seconds = current_seconds + seconds_to_wait
+            if current_seconds >= max_seconds:
+                break
+            
         self._api.use_session(None)
         self._gpio_session.close()
-    
+
     
 
 I2C_BUS_NUMBER = 1
