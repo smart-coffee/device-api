@@ -184,8 +184,8 @@ class RemoteSession:
 I2C_BUS_NUMBER = 1
 
 I2C_ADDRESS_MAPPINGS = {
-    'WATER': 0x61,
-    'COFFEE_STRENGTH': 0x60
+    'WATER': 0x60,
+    'COFFEE_STRENGTH': 0x61
 }
 
 I2C_DELAY = 0.05
