@@ -1,6 +1,7 @@
 from typing import List
 import RPi.GPIO as GPIO
 import time
+import threading
 
 
 class RemoteGPIOSession:
@@ -26,9 +27,15 @@ class RemoteGPIOSession:
         GPIO.output(gpio, value)
     
     def close(self):
-        GPIO.cleanup()
+        thread = threading.Thread(target=self.cleanup_gpio_with_delay())
+        thread.daemon = True
+        thread.start()
         self._opened = False
         self._closed = True
+    
+    def cleanup_gpio_with_delay(self):
+        time.sleep(5)
+        GPIO.cleanup()
 
 
 class GPIORead:
