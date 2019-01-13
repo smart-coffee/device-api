@@ -61,6 +61,8 @@ class CoffeeMachineHardwareAPI:
         gpio_numbers = list(GPIO_IN_PINS.values())
         session = self._session
         reads = read_gpio_list(gpio_numbers=gpio_numbers, sample_rate=SAMPLE_RATE, check_cycles=CHECK_CYCLES, session=session)
+        for i in reads:
+            print(i)
         status = DeviceStatus()
 
         # Check water LED
