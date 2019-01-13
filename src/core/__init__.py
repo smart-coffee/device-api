@@ -110,7 +110,7 @@ class CoffeeMachineHardwareAPI:
         filtered_gpio_read = (r for r in gpio_reads if r.gpio_number == gpio_number)
 
         return_value = fallback
-        if len(list(filtered_gpio_read) > 0):
+        if len(list(filtered_gpio_read)) > 0:
             gpio_read = next(filtered_gpio_read)
             return_value = gpio_read.value
         else:
