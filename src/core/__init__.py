@@ -61,8 +61,6 @@ class CoffeeMachineHardwareAPI:
         gpio_numbers = list(GPIO_IN_PINS.values())
         session = self._session
         reads = read_gpio_list(gpio_numbers=gpio_numbers, sample_rate=SAMPLE_RATE, check_cycles=CHECK_CYCLES, session=session)
-        for i in reads:
-            print(i)
         status = DeviceStatus()
 
         # Check water LED
@@ -109,11 +107,11 @@ class CoffeeMachineHardwareAPI:
 
     def _read_single_status(self, gpio_reads: List[GPIORead], gpio_number: int, fallback: bool, status_name: str) -> bool:
         logger.debug('Start checking {}'.format(status_name))
-        filtered_gpio_read = (r for r in gpio_reads if r.gpio_number == gpio_number)
+        filtered_gpio_read = list((r for r in gpio_reads if r.gpio_number == gpio_number))
 
         return_value = fallback
-        if len(list(filtered_gpio_read)) > 0:
-            gpio_read = next(filtered_gpio_read)
+        if len(filtered_gpio_read) > 0:
+            gpio_read = filtered_gpio_read[0]
             return_value = gpio_read.value
         else:
             logger.debug('GPIO {0} status was not found in result list. Returning fallback: {1}'.format(gpio_number, fallback))
