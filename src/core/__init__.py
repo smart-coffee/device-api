@@ -182,15 +182,16 @@ class RemoteSession:
     
     def close_in_background_if_device_is_ready(self):
         seconds_to_wait = 2
-        max_seconds = 30
+        max_seconds = 45
         current_seconds = 0
         while not self._api.status.device_ready:
-            logger.debug('Device is not ready.')
+            logger.debug('Device is not ready. Waiting {0} seconds. (Waited total: {1})'.format(seconds_to_wait, current_seconds))
             time.sleep(seconds_to_wait)
             current_seconds = current_seconds + seconds_to_wait
             if current_seconds >= max_seconds:
+                logger.debug('Reached maximum seconds: {0} ({1})'.format(max_seconds, current_seconds))
                 break
-            
+        logger.debug('Closing session after {0} seconds.'.format(current_seconds))
         self._api.use_session(None)
         self._gpio_session.close()
 
