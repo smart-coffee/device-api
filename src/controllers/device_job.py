@@ -28,8 +28,8 @@ class DeviceJobController:
         coffee_strength_in_percent = get_percent_value(value=coffee_strength_in_percent, accuracy=0)
         doses = create_job.doses
         logger.debug('Doses: {0}, Water: {1}, Coffee: {2}'.format(doses, water_in_percent, coffee_strength_in_percent))
-        CM_API.set_water_in_percent(water_in_percent=water_in_percent)
-        CM_API.set_coffee_strength_in_percent(coffee_strength_in_percent=coffee_strength_in_percent)
+        #CM_API.set_water_in_percent(water_in_percent=water_in_percent)
+        #CM_API.set_coffee_strength_in_percent(coffee_strength_in_percent=coffee_strength_in_percent)
         CM_API.make_coffee(doses=doses)
         session.close()
         response = WEB_API.create_job(token, create_job_body)
