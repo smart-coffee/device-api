@@ -76,7 +76,7 @@ class DeviceStatus:
             'water_tank_fill_level_in_percent': fields.Integer,
             'coffee_bean_container_ready': fields.Boolean,
             'coffee_bean_container_fill_level_in_percent': fields.Integer,
-            'coffee_grounds_container_ready': fields.Integer,
+            'coffee_grounds_container_ready': fields.Boolean,
             'coffee_grounds_container_fill_level_in_percent': fields.Integer,
             'coffee_machine_runtime_state': fields.Integer
         }
