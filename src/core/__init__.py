@@ -97,9 +97,7 @@ class CoffeeMachineHardwareAPI:
 
         # Set status
         status.water_tank_ready = water_led is False
-        print(status.coffee_grounds_container_ready)
         status.coffee_grounds_container_ready = coffee_grounds_led is False
-        print(coffee_grounds_led, coffee_grounds_led is False, status.coffee_grounds_container_ready)
         
         is_on = one_dose_led and two_doses_led
         runtime_state = DeviceRuntimeState.ON if is_on else DeviceRuntimeState.OFF
