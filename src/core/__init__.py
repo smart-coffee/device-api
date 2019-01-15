@@ -176,7 +176,10 @@ class RemoteSession:
         self._gpio_session = RemoteGPIOSession(relais_gpio=_relais_gpio, relais_value=True)
     
     def open(self):
-        self._api.use_session(self)
+        try:
+            self._api.use_session(self)
+        except DeviceBlockedException:
+            raise ResourceException(status_code=405, message='Gerät ist aktuell belegt.')
         self._gpio_session.open()
     
     def close(self):
