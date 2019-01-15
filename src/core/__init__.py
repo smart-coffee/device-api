@@ -14,6 +14,7 @@ from config.environment_tools import get_webapi_domain, get_webapi_port, get_ssl
 from config.flask_config import ResourceException
 from core.gpio import set_gpio, RemoteGPIOSession, read_gpio_list, GPIORead
 from core.i2c import set_dac_value
+from core.exceptions import DeviceBlockedException
 
 
 logger = logging.getLogger(get_logger_name(__name__))
@@ -125,6 +126,9 @@ class CoffeeMachineHardwareAPI:
         return return_value
 
     def use_session(self, session):
+        # If you want to start a new session, but the old session is still active
+        if (not (session is None)) and (not (self._session is None)):
+            raise DeviceBlockedException
         self._session = session
 
     def set_water_in_percent(self, water_in_percent: int):
