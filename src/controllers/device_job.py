@@ -11,9 +11,6 @@ logger = logging.getLogger(get_logger_name(__name__))
 
 class DeviceJobController:
     def create_job(self, token:str, create_job: CreateDeviceJob) -> DeviceJob:
-        session = RemoteSession(cm_hw_api=CM_API)
-        session.open()
-        
         status = CM_API.status
         if not status.device_ready:
             raise ResourceException(status_code=405, message='Kaffeemaschine ist nicht bereit.')
@@ -22,6 +19,10 @@ class DeviceJobController:
             **(create_job.__dict__),
             **(settings.__dict__)
         }
+        
+        session = RemoteSession(cm_hw_api=CM_API)
+        session.open()
+
         water_in_percent = create_job.water_in_percent
         water_in_percent = get_percent_value(value=water_in_percent, accuracy=0)
         coffee_strength_in_percent = create_job.coffee_strength_in_percent
