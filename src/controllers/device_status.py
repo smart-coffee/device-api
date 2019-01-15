@@ -13,10 +13,13 @@ class DeviceStatusController:
         state = status.device_runtime_state
         if state == DeviceRuntimeState.ON:
             self.turn_on(token)
+            reverse_state = DeviceRuntimeState.OFF
         if state == DeviceRuntimeState.OFF:
             self.turn_off(token)
+            reverse_state = DeviceRuntimeState.ON
 
         new_status = CM_API.status
+        new_status.coffee_machine_runtime_state = reverse_state.state_id
         session.close()
         return new_status
 
