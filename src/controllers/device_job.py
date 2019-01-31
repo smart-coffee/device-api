@@ -39,6 +39,8 @@ class DeviceJobController:
             logger.warning('Could not set coffee strength value. Choosing previous value. (Default: 50 %)')
         CM_API.make_coffee(doses=doses)
         session.close()
+
+        create_job_body['price'] = create_job_body['price'] * doses
         response = WEB_API.create_job(token, create_job_body)
         response_json = response.json()
 
