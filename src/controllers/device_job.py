@@ -12,8 +12,8 @@ logger = logging.getLogger(get_logger_name(__name__))
 class DeviceJobController:
     def create_job(self, token:str, create_job: CreateDeviceJob) -> DeviceJob:
         status = CM_API.status
-        #if not status.device_ready:
-        #    raise ResourceException(status_code=405, message='Kaffeemaschine ist nicht bereit.')
+        if not status.device_ready:
+            raise ResourceException(status_code=405, message='Kaffeemaschine ist nicht bereit.')
         settings = CM_API.settings
         create_job_body = {
             **(create_job.__dict__),
