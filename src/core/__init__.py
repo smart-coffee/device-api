@@ -215,25 +215,25 @@ I2C_DELAY = 0.05
 
 # GPIO-OUT mappings
 GPIO_OUT_PINS = {
-    'ONE_DOSE': 17,
-    'TWO_DOSES': 27,
-    'STEAM': 14,
-    'ECO': 18,
-    'POWER': 4,
-    'MAINTENANCE': 15,
+    'ONE_DOSE': 27,
+    'TWO_DOSES': 24,
+    'STEAM': 4,
+    'ECO': 22,
+    'POWER': 18,
+    'MAINTENANCE': 17,
     'RELAIS': 21
 }
 
 # GPIO-IN mappings
 GPIO_IN_PINS = {
-    'ECO': 23,
-    'MAINTENANCE': 22,
-    'WARNING': 24,
-    'STEAM': 10,
-    'TWO_DOSES': 8,
-    'ONE_DOSE': 26,
-    'WATER': 19,
-    'COFFEE_GROUNDS_CONTAINER': 11 
+    'ECO': 6,
+    'MAINTENANCE': 5,
+    'WARNING': 12,
+    'STEAM': 13,
+    'TWO_DOSES': 16,
+    'ONE_DOSE': 20,
+    'WATER': 26,
+    'COFFEE_GROUNDS_CONTAINER': 19 
 }
 
 # Reads a single GPIO-IN signal X amount of times and then continues with the next GPIO-IN signal
