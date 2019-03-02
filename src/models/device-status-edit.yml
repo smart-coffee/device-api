@@ -7,3 +7,12 @@ properties:
   coffee_machine_runtime_state:
     type: integer
     example: 1
+  device_eco_mode:
+    type: boolean
+    example: true
+  device_maintenance:
+    type: boolean
+    example: true
+  device_steam:
+    type: boolean
+    example: true

@@ -168,6 +168,18 @@ class CoffeeMachineHardwareAPI:
         pin = GPIO_OUT_PINS['POWER']
         self.press_button(pin = pin)
     
+    def toggle_eco(self):
+        pin = GPIO_OUT_PINS['ECO']
+        self.press_button(pin = pin)
+    
+    def toggle_steam(self):
+        pin = GPIO_OUT_PINS['STEAM']
+        self.press_button(pin = pin)
+    
+    def toggle_maintenance(self):
+        pin = GPIO_OUT_PINS['MAINTENANCE']
+        self.press_button(pin = pin)
+
     def press_button(self, pin: int):
         session = self._session
         set_gpio(gpio_number=pin, value=False, duration_in_sec=BUTTON_PRESS_DURATION, session=session)

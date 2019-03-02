@@ -93,7 +93,10 @@ class EditDeviceStatus:
     file: /models/device-status-edit.yml
     """
     def __init__(self, *args, **kwargs):
-        self.coffee_machine_runtime_state = DeviceRuntimeState.OFF.state_id if not ('coffee_machine_runtime_state' in kwargs) else kwargs['coffee_machine_runtime_state']
+        self.coffee_machine_runtime_state = None if not ('coffee_machine_runtime_state' in kwargs) else kwargs['coffee_machine_runtime_state']
+        self.device_eco_mode = None if not ('device_eco_mode' in kwargs) else kwargs['device_eco_mode']
+        self.device_maintenance = None if not ('device_maintencance' in kwargs) else kwargs['device_maintenance']
+        self.device_steam = None if not ('device_steam' in kwargs) else kwargs['device_steam']
     
     @property
     def device_runtime_state(self) -> DeviceRuntimeState:
@@ -106,7 +109,10 @@ class EditDeviceStatus:
     @staticmethod
     def get_fields():
         return {
-            'coffee_machine_runtime_state': fields.Integer
+            'coffee_machine_runtime_state': fields.Integer,
+            'device_eco_mode': fields.Boolean,
+            'device_maintenance': fields.Boolean,
+            'device_steam': fields.Boolean
         }
 
 
