@@ -6,6 +6,7 @@ required:
   - water_tank_ready
   - coffee_bean_container_ready
   - coffee_grounds_container_ready
+  - device_eco_mode
 properties:
   device_ready:
     type: boolean
@@ -31,3 +32,6 @@ properties:
   coffee_machine_runtime_state:
     type: integer
     example: 1
+  device_eco_mode:
+    type: boolean
+    example: true
