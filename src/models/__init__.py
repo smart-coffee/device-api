@@ -53,6 +53,7 @@ class DeviceStatus:
         self.coffee_machine_runtime_state = DeviceRuntimeState.OFF.state_id
         self.device_eco_mode = False
         self.device_maintenance = False
+        self.device_steam = False
     
     @property
     def device_runtime_state(self) -> DeviceRuntimeState:
@@ -82,7 +83,8 @@ class DeviceStatus:
             'coffee_grounds_container_fill_level_in_percent': fields.Integer,
             'coffee_machine_runtime_state': fields.Integer,
             'device_eco_mode': fields.Boolean,
-            'device_maintenance': fields.Boolean
+            'device_maintenance': fields.Boolean,
+            'device_steam': fields.Boolean
         }
 
 @SWAG.definition('EditDeviceStatus')

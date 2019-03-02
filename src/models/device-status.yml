@@ -8,6 +8,7 @@ required:
   - coffee_grounds_container_ready
   - device_eco_mode
   - device_maintenance
+  - device_steam
 properties:
   device_ready:
     type: boolean
@@ -37,5 +38,8 @@ properties:
     type: boolean
     example: true
   device_maintenance:
+    type: boolean
+    example: true
+  device_steam:
     type: boolean
     example: true
