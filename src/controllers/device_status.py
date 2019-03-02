@@ -23,6 +23,8 @@ class DeviceStatusController:
                     current_status = self.turn_on(token, current_status)
                 elif state == DeviceRuntimeState.OFF:
                     current_status = self.turn_off(token, current_status)
+                # No other actions are allowed if runtime state changed
+                return current_status
 
             eco_mode = status.device_eco_mode
             if not(eco_mode is None):
