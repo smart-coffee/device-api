@@ -158,6 +158,7 @@ class CoffeeMachineHardwareAPI:
             msg = 'Kaffeeauftrag mit {doses} Dosen nicht möglich.'.format(doses=doses)
             logger.error(msg)
             raise ResourceException(status_code=405, message=msg)
+        time.sleep(I2C_FINAL_DELAY)
         self.press_button(pin = pin)
     
     def toggle_power(self):
@@ -212,6 +213,8 @@ I2C_ADDRESS_MAPPINGS = {
 }
 
 I2C_DELAY = 0.05
+
+I2C_FINAL_DELAY = 0.3
 
 # GPIO-OUT mappings
 GPIO_OUT_PINS = {
