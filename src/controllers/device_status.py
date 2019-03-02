@@ -16,8 +16,8 @@ class DeviceStatusController:
         session.open()
         try:
             current_status = CM_API.status
-            
-            state_id = coffee_machine_runtime_state
+
+            state_id = status.coffee_machine_runtime_state
             if not(state_id is None):
                 state = status.device_runtime_state
                 logger.info('Changing runtime state.')
