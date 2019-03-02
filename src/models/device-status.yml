@@ -7,6 +7,7 @@ required:
   - coffee_bean_container_ready
   - coffee_grounds_container_ready
   - device_eco_mode
+  - device_maintenance
 properties:
   device_ready:
     type: boolean
@@ -33,5 +34,8 @@ properties:
     type: integer
     example: 1
   device_eco_mode:
+    type: boolean
+    example: true
+  device_maintenance:
     type: boolean
     example: true
