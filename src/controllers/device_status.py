@@ -55,7 +55,6 @@ class DeviceStatusController:
                     current_status = self.turn_steam_off(current_status)
 
             new_status = CM_API.status
-            new_status.coffee_machine_runtime_state = state.state_id
         except ValueError as err:
             raise ResourceException(status_code=404, message=str(err))
         finally:
