@@ -15,9 +15,11 @@ class DeviceStatusController:
         session = RemoteSession(cm_hw_api=CM_API)
         session.open()
         try:
-            state = status.device_runtime_state
             current_status = CM_API.status
-            if not(state is None):
+            
+            state_id = coffee_machine_runtime_state
+            if not(state_id is None):
+                state = status.device_runtime_state
                 logger.info('Changing runtime state.')
                 if state == DeviceRuntimeState.ON:
                     current_status = self.turn_on(token, current_status)
