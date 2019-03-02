@@ -9,16 +9,20 @@ class DeviceStatusController:
     def set_status(self, token:str, status:EditDeviceStatus) -> DeviceStatus:
         session = RemoteSession(cm_hw_api=CM_API)
         session.open()
+        try:
+            state = status.device_runtime_state
+            if state == DeviceRuntimeState.ON:
+                self.turn_on(token)
+            if state == DeviceRuntimeState.OFF:
+                self.turn_off(token)
 
-        state = status.device_runtime_state
-        if state == DeviceRuntimeState.ON:
-            self.turn_on(token)
-        if state == DeviceRuntimeState.OFF:
-            self.turn_off(token)
-
-        new_status = CM_API.status
-        new_status.coffee_machine_runtime_state = state.state_id
-        session.close()
+            new_status = CM_API.status
+            new_status.coffee_machine_runtime_state = state.state_id
+        except ValueError as err:
+            raise ResourceException(status_code=404, message=str(err))
+        finally:
+            session.close()
+            
         return new_status
 
     def turn_on(self, token: str) -> DeviceStatus:
