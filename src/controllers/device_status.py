@@ -18,6 +18,7 @@ class DeviceStatusController:
             state = status.device_runtime_state
             current_status = CM_API.status
             if not(state is None):
+                logger.info('Changing runtime state.')
                 if state == DeviceRuntimeState.ON:
                     current_status = self.turn_on(token, current_status)
                 elif state == DeviceRuntimeState.OFF:
@@ -25,6 +26,7 @@ class DeviceStatusController:
 
             eco_mode = status.device_eco_mode
             if not(eco_mode is None):
+                logger.info('Changing eco mode.')
                 if eco_mode:
                     current_status = self.turn_eco_mode_on(current_status)
                 elif not eco_mode:
@@ -32,6 +34,7 @@ class DeviceStatusController:
 
             maintenance = status.device_maintenance
             if not(maintenance is None):
+                logger.info('Changing maintenance.')
                 if maintenance:
                     current_status = self.turn_maintenance_on(current_status)
                 elif not maintenance:
@@ -39,6 +42,7 @@ class DeviceStatusController:
 
             steam = status.device_steam
             if not(steam is None):
+                logger.info('Changing steam.')
                 if steam:
                     current_status = self.turn_steam_on(current_status)
                 elif not steam:
@@ -57,6 +61,7 @@ class DeviceStatusController:
         if status.is_on():
             logger.info('Coffee Machine is already on.')
             return status
+        logger.info('Coffee Machine Runtime State: ON')
         CM_API.toggle_power()
         return CM_API.status
     
@@ -64,6 +69,7 @@ class DeviceStatusController:
         if status.is_off():
             logger.info('Coffee Machine is already off.')
             return status
+        logger.info('Coffee Machine Runtime State: OFF')
         CM_API.toggle_power()
         return CM_API.status
     
@@ -71,6 +77,7 @@ class DeviceStatusController:
         if status.device_eco_mode:
             logger.info('Coffee Machine eco mode is already on.')
             return status
+        logger.info('Coffee Machine ECO: ON')
         CM_API.toggle_eco()
         return CM_API.status
     
@@ -78,6 +85,7 @@ class DeviceStatusController:
         if not status.device_eco_mode:
             logger.info('Coffee Machine eco mode is already off.')
             return status
+        logger.info('Coffee Machine ECO: OFF')
         CM_API.toggle_eco()
         return CM_API.status
 
@@ -85,6 +93,7 @@ class DeviceStatusController:
         if status.device_maintenance:
             logger.info('Coffee Machine maintenance is already on.')
             return status
+        logger.info('Coffee Machine Maintenance: ON')
         CM_API.toggle_maintenance()
         return CM_API.status
     
@@ -92,6 +101,7 @@ class DeviceStatusController:
         if not status.device_maintenance:
             logger.info('Coffee Machine maintenance is already off.')
             return status
+        logger.info('Coffee Machine Maintenance: OFF')
         CM_API.toggle_maintenance()
         return CM_API.status
     
@@ -99,6 +109,7 @@ class DeviceStatusController:
         if status.device_steam:
             logger.info('Coffee Machine steam is already on.')
             return status
+        logger.info('Coffee Machine Steam: ON')
         CM_API.toggle_steam()
         return CM_API.status
     
@@ -106,5 +117,6 @@ class DeviceStatusController:
         if not status.device_steam:
             logger.info('Coffee Machine steam is already off.')
             return status
+        logger.info('Coffee Machine Steam: OFF')
         CM_API.toggle_steam()
         return CM_API.status
