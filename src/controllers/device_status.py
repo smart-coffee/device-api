@@ -26,7 +26,9 @@ class DeviceStatusController:
                 elif state == DeviceRuntimeState.OFF:
                     current_status = self.turn_off(token, current_status)
                 # No other actions are allowed if runtime state changed
-                return current_status
+                new_status = CM_API.status
+                new_status.coffee_machine_runtime_state = state.state_id
+                return new_status
 
             eco_mode = status.device_eco_mode
             if not(eco_mode is None):
