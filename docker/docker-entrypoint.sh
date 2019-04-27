@@ -15,14 +15,22 @@ KEY_FILE=""
 # Customize as needed
 APP_HOST=0.0.0.0
 APP_PORT=80
-SECRET_KEY=XLrIjHvKsQskA7m
-APP_URL_PREFIX=/api
+
+#############################
+## Configured in balena.io ##
+# SECRET_KEY=               #
+# APP_URL_PREFIX=           #
+#############################
 
 # Should be empty in $local_mode environment
 SWAGGER_BASE_URL=""
 
-WEBAPI_DOMAIN=https://contabo.tobias-blaufuss.de
-WEBAPI_PORT=60001
+#############################
+## Configured in balena.io ##
+# WEBAPI_DOMAIN=            #
+# WEBAPI_PORT=              #
+#############################
+
 SSL_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt'
 EOF
 fi
