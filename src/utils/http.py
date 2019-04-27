@@ -4,7 +4,8 @@ from typing import List
 from functools import wraps
 from flask import request
 from simplexml import dumps
-from werkzeug.wrappers import Response, HTTP_STATUS_CODES
+from werkzeug.wrappers import Response
+from werkzeug.http import HTTP_STATUS_CODES
 
 from config.flask_config import AuthenticationFailed
 from core import WEB_API
