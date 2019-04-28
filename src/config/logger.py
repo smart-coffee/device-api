@@ -24,7 +24,7 @@ logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(levelname)-8s - %(name)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 debug_handler = logging.StreamHandler()
-debug_handler.setLevel(logging.DEBUG)
+debug_handler.setLevel(logging.INFO)
 debug_handler.setFormatter(formatter)
 logger.addHandler(debug_handler)
 
