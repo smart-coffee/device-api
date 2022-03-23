@@ -14,7 +14,8 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-stretch-run
 
 # Install necessary ssl certificates and i2c dependencies
 RUN apt-get update \
-    && apt-get install libssl-dev \
+    && sed -i 's#mozilla\/DST_Root_CA_X3.crt#!mozilla\/DST_Root_CA_X3.crt#g' /etc/ca-certificates.conf \
+    && update-ca-certificates --fresh \
     && curl https://letsencrypt.org/certs/isrgrootx1.pem.txt -o /usr/local/share/ca-certificates/isrgrootx1.crt \
     && curl https://letsencrypt.org/certs/letsencryptauthorityx1.pem.txt -o /usr/local/share/ca-certificates/letsencryptauthorityx1.crt \
     && curl https://letsencrypt.org/certs/letsencryptauthorityx2.pem.txt -o /usr/local/share/ca-certificates/letsencryptauthorityx2.crt \
