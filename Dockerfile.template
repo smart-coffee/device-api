@@ -27,11 +27,12 @@ RUN apt-get update \
     && apt-get install i2c-tools wget
 
 # Install C library pigpio
-RUN wget abyz.me.uk/rpi/pigpio/pigpio.tar \
-    && tar xf pigpio.tar \
-    && cd PIGPIO \
-    && make \
-    && make install
+RUN apt-get install pigpio
+#RUN wget abyz.me.uk/rpi/pigpio/pigpio.tar \
+#    && tar xf pigpio.tar \
+#    && cd PIGPIO \
+#    && make \
+#    && make install
 
 
 # Set our working directory
