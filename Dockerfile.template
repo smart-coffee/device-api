@@ -27,18 +27,11 @@ RUN apt-get update \
     && apt-get install i2c-tools wget unzip make
 
 # Install C library pigpio
-#RUN apt-get install pigpio
-RUN wget https://github.com/joan2937/pigpio/archive/master.zip \
-    && unzip master.zip \
-    && cd pigpio-master \
-    && make \
-    && make install
-#RUN wget abyz.me.uk/rpi/pigpio/pigpio.tar \
-#    && tar xf pigpio.tar \
-#    && cd PIGPIO \
+#RUN wget https://github.com/joan2937/pigpio/archive/master.zip \
+#    && unzip master.zip \
+#    && cd pigpio-master \
 #    && make \
 #    && make install
-
 
 # Set our working directory
 WORKDIR /usr/src/app
@@ -55,7 +48,7 @@ RUN pip install --upgrade pip setuptools && pip install -r /requirements.txt
 COPY . ./
 
 # Compile c library
-RUN gcc -Wall -pthread -o /usr/local/bin/read_gpio c_lib/read_gpio.c -lpigpio -lrt
+#RUN gcc -Wall -pthread -o /usr/local/bin/read_gpio c_lib/read_gpio.c -lpigpio -lrt
 
 # switch on systemd init system in container
 ENV INITSYSTEM on
