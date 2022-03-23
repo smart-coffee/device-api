@@ -26,6 +26,8 @@ RUN apt-get update \
     && update-ca-certificates \
     && apt-get install i2c-tools wget unzip make
 
+RUN apt-get update && apt-get install python-rpi.gpio python3-rpi.gpio
+
 # Install C library pigpio
 #RUN wget https://github.com/joan2937/pigpio/archive/master.zip \
 #    && unzip master.zip \
