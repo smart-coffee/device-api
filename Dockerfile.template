@@ -42,6 +42,7 @@ WORKDIR /usr/src/app
 COPY ./requirements.txt /requirements.txt
 
 # pip install python deps from requirements.txt on the resin.io build server
+ENV CFLAGS="-fcommon"
 RUN pip install --upgrade pip setuptools && pip install -r /requirements.txt
 
 #RUN apt-get update && apt-get install -y python3-serial
