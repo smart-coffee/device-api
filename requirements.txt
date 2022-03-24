@@ -7,7 +7,7 @@ python-dotenv
 flask-cors
 email_validator
 requests
-RPi.Gpio
+RPi.Gpio==0.7.1a4
 smbus2
 # flask-sqlalchemy
 # pymysql

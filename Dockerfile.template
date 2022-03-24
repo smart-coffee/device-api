@@ -1,6 +1,5 @@
 # base-image for python on any machine using a template variable,
 # see more about dockerfile templates here:http://docs.resin.io/pages/deployment/docker-templates
-#FROM resin/%%RESIN_MACHINE_NAME%%-python:3
 FROM balenalib/%%RESIN_MACHINE_NAME%%-python:3
 
 # use apt-get if you need to install dependencies,
@@ -11,8 +10,6 @@ FROM balenalib/%%RESIN_MACHINE_NAME%%-python:3
 
 #RUN apt-get update && apt-get install -yq \
 #    python3-gpiozero python-gpiozero python-rpi.gpio python-spidev python3-rpi.gpio python3-spidev
-
-RUN apt-get update -y && apt-get install build-essential
 
 # Install necessary ssl certificates and i2c dependencies
 RUN apt-get update \
@@ -26,9 +23,7 @@ RUN apt-get update \
     && curl https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt -o /usr/local/share/ca-certificates/letsencryptx3.crt \
     && curl https://letsencrypt.org/certs/lets-encrypt-x4-cross-signed.pem.txt -o /usr/local/share/ca-certificates/letsencryptx4.crt \
     && update-ca-certificates \
-    && apt-get install i2c-tools wget unzip make
-
-#RUN apt-get update && apt-get install python3-rpi.gpio
+    && apt-get install i2c-tools wget unzip make build-essential
 
 # Install C library pigpio
 #RUN wget https://github.com/joan2937/pigpio/archive/master.zip \
@@ -44,7 +39,7 @@ WORKDIR /usr/src/app
 COPY ./requirements.txt /requirements.txt
 
 # pip install python deps from requirements.txt on the resin.io build server
-RUN pip install --upgrade pip setuptools && pip install -r /requirements.txt
+RUN pip install --upgrade pip setuptools && pip install wheel && pip install -r /requirements.txt
 
 #RUN apt-get update && apt-get install -y python3-serial
 
