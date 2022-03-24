@@ -15,3 +15,4 @@ venv/
 docker/
 !docker/docker-entrypoint.sh
 scripts/
+src/.env
